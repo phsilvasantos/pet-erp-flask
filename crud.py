@@ -109,7 +109,7 @@ df
 
 
 query = db.session.query(cliente, cachorro).join(cachorro)
-query = db.session.query(cliente.nome, cachorro.nome).join(cachorro)
+query = db.session.query(cliente.nome.label("cliente"), cachorro.nome.label("dog")).join(cachorro)
 
 
 for item in query.all():
@@ -119,5 +119,3 @@ for item in query.all():
 df = pd.read_sql(query.statement, db.session.bind)
 
 df
-
-query = db.session.select([clientes.c.nome, cachorros.nome], emails.c.user_id == users.c.user_id)
