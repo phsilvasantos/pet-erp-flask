@@ -4,17 +4,15 @@ from pet.models import cliente, cachorro
 from datetime import datetime
 
 
+
 ## create cliente
 db.create_all()
+# db.session.remove()
+aline = cliente('Aline', 'M')
+julio = cliente('Júlio', 'H')
+amanda = cliente('Amanda', 'M')
 
-new = cliente('Aline', 'M')
-new
-
-db.session.add(new)
-
-new = cliente('Amanda', 'M')
-new = cliente('Júlio', 'H')
-
+db.session.add_all([aline, julio, amanda])
 
 db.session.commit()
 # db.session.rollback()
@@ -22,7 +20,9 @@ db.session.commit()
 ## read cliente
 
 cliente.query.all()
-cliente.query.get(1)
+cachorro.query.all()
+
+cliente.query.get(1).nome
 cliente.query.filter_by(nome='Aline').first()
 
 
@@ -40,61 +40,58 @@ def get_id(termo):
 get_id('aline')
 
 
-new = cachorro('Puka', 'shitzu', 'longo', 4, datetime(2016, 10, 1), 'F', 'S')
-new
+puka = cachorro('Puka', 'shitzu', 'longo', datetime(2014, 3, 1),
+                datetime(2016, 10, 1), 'F', 'S')
 
-db.session.add(new)
-
-
-
-db.session.commit()
-db.session.rollback()
-
-
-cachorro.query.all()
-cachorro.query.get(1)
-cachorro.query.filter(cachorro.nome.ilike('puka')).first()
-
-##
-
-# p1 = Parent(name="Alice")
-# p2 = Parent(name="Bob")
-#
-# c1 = Child(name="foo")
-# c2 = Child(name="bar")
-# c3 = Child(name="ker")
-# c4 = Child(name="cat")
-#
-# p1.children.extend([c1, c2, c3])
-# p2.children.append(c4)
-
+# db.session.add(new)
+# db.session.commit()
+# db.session.rollback()
+# cachorro.query.all()
+# cachorro.query.get(1)
+# cachorro.query.filter(cachorro.nome.ilike('puka')).first()
 
 aline = cliente.query.filter_by(nome='Aline').first()
-aline
-
-puka = cachorro.query.get(1)
-puka
 
 aline.cachorro.append(puka)
-
+# aline.cachorro.remove(puka)
 db.session.add(aline)
-db.session.commit()
+# db.session.commit()
 ###
 
-kate = cachorro('Kate', 'shitzu', 'longo', 6, datetime(2016, 10, 10), 'F', 'S')
-neg = cachorro('Neguinha', 'shitzu', 'longo', 3, datetime(2016, 10, 10), 'F', 'S')
-sansa = cachorro('Sansa', 'spitz', 'longo', 3, datetime(2016, 10, 10), 'F', 'S')
+kate = cachorro('Kate', 'shitzu', 'longo', datetime(2013, 10, 10),
+                datetime(2016, 10, 10), 'F', 'S')
+
+neg = cachorro('Neguinha', 'shitzu', 'longo', datetime(2014, 10, 10),
+                datetime(2016, 10, 10), 'F', 'S')
+
+sansa = cachorro('Sansa', 'spitz', 'longo', datetime(2015, 10, 10),
+                datetime(2016, 10, 10), 'F', 'S')
 
 amanda = cliente.query.filter(cliente.nome.ilike('amanda')).first()
-amanda
 
 amanda.cachorro.extend([sansa, kate, neg])
 
-db.session.add(amanda)
+# db.session.add(amanda)
+# db.session.commit()
+
+###
+
+pipoca = cachorro('pipoca', 'mascara', 'curto', datetime(2010, 10, 14),
+                    datetime(2018, 10, 14), 'F', 'S')
+leon = cachorro('Leon', 'bull-terrier', 'longo', datetime(2009, 10, 14),
+                    datetime(2018, 10, 14), 'M', 'S')
+
+marcelo = cliente('Marcelo', 'M')
+marcelo.cachorro.extend([pipoca, leon])
+db.session.add_all([marcelo, amanda, aline])
 db.session.commit()
 
 ###
 cachorro.query.all()
+cliente.query.all()
+
+cliente.query.delete()
+cachorro.query.delete()
 
 for class_instance in db.session.query(cachorro).all():
     print(vars(class_instance))
@@ -102,20 +99,29 @@ for class_instance in db.session.query(cachorro).all():
 
 import pandas as pd
 
-
-df = pd.read_sql(db.session.query(cachorro).filter(cachorro.id < 100).statement, db.session.bind)
+# mostra tabela de cachorros
+df = pd.read_sql(
+    db.session.query(cachorro).filter(cachorro.id < 100).statement,
+    db.session.bind)
 
 df
 
-
+# mostra todas as colunas
 query = db.session.query(cliente, cachorro).join(cachorro)
-query = db.session.query(cliente.nome.label("cliente"), cachorro.nome.label("dog")).join(cachorro)
+
+# mostra o nome do dono e do cachorro
+query = db.session.query(
+    cliente.nome.label("cliente"),
+    cachorro.nome.label("dog"),
+    cachorro.breed.label('raça'),
+    cachorro.idade.label('idade')
+    ).join(cachorro)
 
 
+# retorna resultado em tuplas
 for item in query.all():
     print(item)
 
-
+# coloca em df
 df = pd.read_sql(query.statement, db.session.bind)
-
 df
