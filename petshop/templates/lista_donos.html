@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4">Cadastro de Cães</h1>
+    <h2>Escolha o dono do cão a ser cadastrado</h2>
+
+
+    <ul>
+        {% for item in listagem %}
+        <li>{{ "{}".format(item) }} </li>
+        {% endfor %}
+
+    </ul>
+
+  </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4">Cadastro de Clientes</h1>
+    <h3>Preencha abaixo os dados do novo cliente:</h3>
+
+    <form class="form form-vertical" method="POST" role="form">
+        {{ wtf.quick_form(form) }}
+    </form>
+
+
+
+
+
+  </div>
+</div>
+
+
+{% endblock %}

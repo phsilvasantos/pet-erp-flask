@@ -1,6 +1,6 @@
 """Testing crud."""
 from pet import db
-from pet.models import cliente, cachorro, venda, contato, endereco
+from pet.models import Cliente, Cachorro, Venda, Contato, Endereco
 from datetime import datetime
 import pandas as pd
 
@@ -8,12 +8,12 @@ import pandas as pd
 # db.create_all()
 
 
-cliente.query.all()
+Cliente.query.all()
 
-aline = cliente.query.filter_by(nome='Aline').first()
-puka = cachorro.query.filter_by(nome='Puka').first()
+aline = Cliente.query.filter_by(nome='Aline').first()
+puka = Cachorro.query.filter_by(nome='Puka').first()
 
-sale = venda(
+sale = Venda(
         descricao='tosa na tesoura', data_venda=datetime(2018, 10, 12),
         valor_venda=100, valor_taxi=10, n_banhos=1, tipo='avulso',
         pacote='---', forma_pagto='cash', data_pagto=datetime(2018,10,12),
@@ -21,13 +21,19 @@ sale = venda(
         )
 
 aline.venda.append(sale)
+
+
+
+
+
+
 puka.venda.append(sale)
 
 ####
-comprador = cliente.query.filter(cliente.nome.ilike('marcelo')).first()
-cao = cachorro.query.filter(cachorro.nome.ilike('leon')).first()
+comprador = Cliente.query.filter(Cliente.nome.ilike('marcelo')).first()
+cao = Cachorro.query.filter(Cachorro.nome.ilike('leon')).first()
 
-sale = venda(
+sale = Venda(
         descricao='tosa na maquina', data_venda=datetime(2018, 9, 12),
         valor_venda=50, valor_taxi=10, n_banhos=1, tipo='avulso',
         pacote='---', forma_pagto='cash', data_pagto=datetime(2018, 9, 12),
@@ -41,15 +47,16 @@ db.session.add_all([aline, puka, comprador, cao])
 db.session.commit()
 
 
-# mostra o nome do dono e do cachorro
+# mostra o nome do dono e do Cachorro
 query = db.session.query(
-    cliente.nome.label("cliente"),
-    cachorro.nome.label("dog"),
-    cachorro.breed.label('raça'),
-    venda.data_venda.label('data'),
-    venda.valor_entrada.label('valor'),
-    venda.descricao
-    ).join(cachorro, venda)
+    Cliente.nome.label("Cliente"),
+    Contato.email.label("mail"),
+    Cachorro.nome.label("dog"),
+    Cachorro.breed.label('raça'),
+    Venda.data_venda.label('data'),
+    Venda.valor_entrada.label('valor'),
+    Venda.descricao
+    ).join(Contato, Cachorro, Venda)
 
 
 help(db.session.query().join)

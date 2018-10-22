@@ -1,21 +1,21 @@
 """Testing crud."""
 from pet import db
-from pet.models import cliente, cachorro, contato, endereco, venda
+from pet.models import Cliente, Cachorro, Contato, Endereco, Venda
 from datetime import datetime
 import pandas as pd
 # db.metadata.clear()
 # db.create_all()
 
 
-cliente.query.all()
-contato_aline = contato(tel1='11-95276-2922', tel2='11-98183-6620',
+Cliente.query.all()
+contato_aline = Contato(tel1='11-95276-2922', tel2='11-98183-6620',
                     email='aline.medeiros03@gmail.com')
 
 
-aline = cliente.query.filter(cliente.nome.ilike('aline')).first()
+aline = Cliente.query.filter(Cliente.nome.ilike('aline')).first()
 aline.contato.append(contato_aline)
 
-endereco_aline = endereco(
+endereco_aline = Endereco(
             rua='Rua Irlanda', numero=554,
             bairro='Capuava', cidade='Santo André',
             estado='SP', distancia=0)
@@ -27,29 +27,29 @@ db.session.add(aline)
 db.session.commit()
 
 ### marcelo
-marcelo = cliente.query.filter(cliente.nome.ilike('marcelo')).first()
+marcelo = Cliente.query.filter(Cliente.nome.ilike('marcelo')).first()
 
-adress = endereco(
+address = Endereco(
             rua='Rua teste marcelo', numero=000,
             bairro='bairo testo marcelo', cidade='Calgary',
             estado='AL', distancia=1000)
 
-contact = contato(tel1='99-marcelo', tel2='88-marcelo',
+contact = Contato(tel1='99-marcelo', tel2='88-marcelo',
                 email='marcelo@gmail.com')
 
 
-marcelo.endereco.append(adress)
+marcelo.endereco.append(address)
 marcelo.contato.append(contact)
 
 ### amanda
-amanda = cliente.query.filter(cliente.nome.ilike('amanda')).first()
+amanda = Cliente.query.filter(Cliente.nome.ilike('amanda')).first()
 
-adress = endereco(
+adress = Endereco(
             rua='Rua teste amanda', numero=000,
             bairro='bairo testo amanda', cidade='Santo André',
             estado='SP', distancia=2)
 
-contact = contato(tel1='99-amanda', tel2='88-amanda',
+contact = Contato(tel1='99-amanda', tel2='88-amanda',
                 email='amanda@gmail.com')
 
 
@@ -63,13 +63,13 @@ db.session.commit()
 
 # mostra o nome do dono e do cachorro
 query = db.session.query(
-    cliente.nome.label("cliente"),
-    cachorro.nome.label("dog"),
-    cachorro.breed.label('raça'),
-    cachorro.nascimento.label('idade'),
-    endereco.rua.label('Rua'),
-    contato.email.label('email')
-    ).join(cachorro, endereco, contato)
+    Cliente.nome.label("Cliente"),
+    Cachorro.nome.label("dog"),
+    Cachorro.breed.label('raça'),
+    Cachorro.nascimento.label('idade'),
+    Endereco.rua.label('Rua'),
+    Contato.email.label('email')
+    ).join(Cachorro, Endereco, Contato)
 
 # retorna resultado em tuplas
 for item in query.all():
