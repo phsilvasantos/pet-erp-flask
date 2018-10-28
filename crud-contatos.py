@@ -1,6 +1,6 @@
 """Testing crud."""
 from pet import db
-from pet.models import Cliente, Cachorro, Contato, Endereco, Venda
+from pet.models import Cliente, Peludo, Contato, Endereco, Venda
 from datetime import datetime
 import pandas as pd
 # db.metadata.clear()
@@ -61,15 +61,15 @@ amanda.contato.append(contact)
 db.session.add_all([amanda, marcelo])
 db.session.commit()
 
-# mostra o nome do dono e do cachorro
+# mostra o nome do dono e do peludo
 query = db.session.query(
     Cliente.nome.label("Cliente"),
-    Cachorro.nome.label("dog"),
-    Cachorro.breed.label('raça'),
-    Cachorro.nascimento.label('idade'),
+    Peludo.nome.label("dog"),
+    Peludo.breed.label('raça'),
+    Peludo.nascimento.label('idade'),
     Endereco.rua.label('Rua'),
     Contato.email.label('email')
-    ).join(Cachorro, Endereco, Contato)
+    ).join(Peludo, Endereco, Contato)
 
 # retorna resultado em tuplas
 for item in query.all():

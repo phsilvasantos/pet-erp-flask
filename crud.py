@@ -1,6 +1,6 @@
 """Testing crud."""
 from pet import db
-from pet.models import Cliente, Cachorro, Contato, Endereco, Venda
+from pet.models import Cliente, Peludo, Contato, Endereco, Venda
 
 from datetime import datetime
 import pandas as pd
@@ -22,7 +22,7 @@ db.session.commit()
 ## read Cliente
 
 Cliente.query.all()
-Cachorro.query.all()
+Peludo.query.all()
 
 Cliente.query.get(1).nome
 Cliente.query.filter_by(nome='Aline').first()
@@ -32,7 +32,7 @@ Cliente.query.filter_by(nome='Aline').first()
 # for _row in query.all():
 #     print(_row.nome, _row.id)
 
-## create cachorro
+## create peludo
 
 def get_id(termo):
     # query = db.session.query(Cliente).filter_by(nome=nome).all()
@@ -42,82 +42,82 @@ def get_id(termo):
 get_id('aline')
 
 
-puka = Cachorro('Puka', 'shitzu', 'longo', datetime(2014, 3, 1),
+puka = Peludo('Puka', 'shitzu', 'longo', datetime(2014, 3, 1),
                 datetime(2016, 10, 1), 'F', 'S')
 
 # db.session.add(new)
 # db.session.commit()
 # db.session.rollback()
-# cachorro.query.all()
-# cachorro.query.get(1)
-# cachorro.query.filter(cachorro.nome.ilike('puka')).first()
+# peludo.query.all()
+# peludo.query.get(1)
+# peludo.query.filter(peludo.nome.ilike('puka')).first()
 
 aline = Cliente.query.filter_by(nome='Aline').first()
 
-aline.cachorro.append(puka)
-# aline.cachorro.remove(puka)
+aline.peludo.append(puka)
+# aline.peludo.remove(puka)
 db.session.add(aline)
 # db.session.commit()
 ###
 
-kate = Cachorro('Kate', 'shitzu', 'longo', datetime(2013, 10, 10),
+kate = Peludo('Kate', 'shitzu', 'longo', datetime(2013, 10, 10),
                 datetime(2016, 10, 10), 'F', 'S')
 
-neg = Cachorro('Neguinha', 'shitzu', 'longo', datetime(2014, 10, 10),
+neg = Peludo('Neguinha', 'shitzu', 'longo', datetime(2014, 10, 10),
                 datetime(2016, 10, 10), 'F', 'S')
 
-sansa = Cachorro('Sansa', 'spitz', 'longo', datetime(2015, 10, 10),
+sansa = Peludo('Sansa', 'spitz', 'longo', datetime(2015, 10, 10),
                 datetime(2016, 10, 10), 'F', 'S')
 
 amanda = Cliente.query.filter(Cliente.nome.ilike('amanda')).first()
 
-amanda.cachorro.extend([sansa, kate, neg])
+amanda.peludo.extend([sansa, kate, neg])
 
 # db.session.add(amanda)
 # db.session.commit()
 
 ###
 
-pipoca = Cachorro('pipoca', 'mascara', 'curto', datetime(2010, 10, 14),
+pipoca = Peludo('pipoca', 'mascara', 'curto', datetime(2010, 10, 14),
                     datetime(2018, 10, 14), 'F', 'S')
-leon = Cachorro('Leon', 'bull-terrier', 'longo', datetime(2009, 10, 14),
+leon = Peludo('Leon', 'bull-terrier', 'longo', datetime(2009, 10, 14),
                     datetime(2018, 10, 14), 'M', 'S')
 
 marcelo = Cliente('Marcelo', 'M')
-marcelo.cachorro.extend([pipoca, leon])
+marcelo.peludo.extend([pipoca, leon])
 db.session.add_all([marcelo, amanda, aline])
 db.session.commit()
 
 ###
-Cachorro.query.all()
+Peludo.query.all()
 Cliente.query.all()
 
 # Cliente.query.delete()
-# cachorro.query.delete()
+# peludo.query.delete()
 
-for class_instance in db.session.query(cachorro).all():
+for class_instance in db.session.query(peludo).all():
     print(vars(class_instance))
 
 
 import pandas as pd
 
-# mostra tabela de cachorros
+# mostra tabela de peludos
 df = pd.read_sql(
-    db.session.query(cachorro).filter(cachorro.id < 100).statement,
+    db.session.query(peludo).filter(peludo.id < 100).statement,
     db.session.bind)
 
 df
 
 # mostra todas as colunas
-query = db.session.query(Cliente, cachorro).join(cachorro)
+query = db.session.query(Cliente, peludo).join(peludo)
 
-# mostra o nome do dono e do cachorro
+# mostra o nome do dono e do peludo
 query = db.session.query(
     Cliente.nome.label("Cliente"),
-    cachorro.nome.label("dog"),
-    cachorro.breed.label('raça'),
-    cachorro.nascimento.label('nascimento')
-    ).join(cachorro)
+    peludo.nome.label("dog"),
+    peludo.breed.label('raça'),
+    peludo.nascimento.label('nascimento')
+    ).join(peludo)
 
 
 # retorna resultado em tuplas

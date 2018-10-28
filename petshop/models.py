@@ -1,20 +1,21 @@
 from petshop import db
 import datetime as dt
 
-class Cliente(db.Model):
-    """O dono do cachorro."""
+
+class Clientes(db.Model):
+    """O dono do peludo."""
 
     # Create a table in the db
-    __tablename__ = 'cliente'
+    __tablename__ = 'clientes'
 
     id = db.Column(db.Integer, primary_key=True)
-    
+
     nome = db.Column(db.NVARCHAR(30), nullable=False)
     sexo = db.Column(db.Enum('M', 'H'), nullable=False)
-    cachorro = db.relationship('Cachorro')
-    contato = db.relationship('Contato')
-    endereco = db.relationship('Endereco')
-    venda = db.relationship('Venda')
+    peludo = db.relationship('Peludos')
+    contato = db.relationship('Contatos')
+    endereco = db.relationship('Enderecos')
+    venda = db.relationship('Vendas')
 
     def __init__(self, nome, sexo):
         """Cria a entidade - nome, sexo."""
@@ -23,13 +24,13 @@ class Cliente(db.Model):
 
     def __repr__(self):
         """Representação."""
-        return f"Cliente: {self.nome}, sexo: {self.sexo}"
+        return f"{self.nome}, da {self.endereco[0]} - tel {self.contato[0]}"
 
 
-class Cachorro(db.Model):
-    """O cachorro."""
+class Peludos(db.Model):
+    """O peludo."""
 
-    __tablename__ = 'cachorro'
+    __tablename__ = 'peludos'
 
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.NVARCHAR(30), nullable=False)
@@ -39,10 +40,10 @@ class Cachorro(db.Model):
     data_start = db.Column(db.Date, nullable=True)
     sexo = db.Column(db.Enum('M', 'F'), nullable=False)
     castrado = db.Column(db.Enum('S', 'N'), nullable=False)
-    cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'))
-    venda = db.relationship('Venda')
-    # cliente = db.relationship('Cliente', back_populates='cachorro')
-    # venda = db.relationship('Venda', back_populates='cachorro')
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+    venda = db.relationship('Vendas')
+    # cliente = db.relationship('Cliente', back_populates='peludo')
+    # venda = db.relationship('Venda', back_populates='peludo')
 
     def __init__(self, nome, breed, pelagem, nascimento, start, sexo, castrado):
         """
@@ -57,7 +58,6 @@ class Cachorro(db.Model):
         self.data_start = start
         self.sexo = sexo
         self.castrado = castrado
-        # self.cliente_id = cliente_id
 
     def __repr__(self):
         """Representação."""
@@ -65,14 +65,14 @@ class Cachorro(db.Model):
         idade = round(diff.days/365, 2)
         return f"""
         {self.nome}, um {self.breed} de pelo {self.pelagem} com {idade} anos
-        cliente: {Cliente.query.get(self.cliente_id).nome}
+        cliente: {Clientes.query.get(self.cliente_id).nome}
         """
 
 
-class Endereco(db.Model):
+class Enderecos(db.Model):
     """Rua, numero, bairro, cidade, estado, distancia."""
 
-    __tablename__ = 'endereco'
+    __tablename__ = 'enderecos'
 
     id = db.Column(db.Integer, primary_key=True)
     rua = db.Column(db.NVARCHAR(30))
@@ -81,7 +81,7 @@ class Endereco(db.Model):
     cidade = db.Column(db.NVARCHAR(30))
     estado = db.Column(db.CHAR(2))
     distancia = db.Column(db.Numeric)
-    cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'))
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='endereco')
 
     def _init_(self, rua, numero, bairro, cidade, estado, distancia):
@@ -95,21 +95,19 @@ class Endereco(db.Model):
 
     def __repr__(self):
         """Representação."""
-        return f"""
-        {self.rua}, {self.numero} em {self.cidade}
-        """
+        return f"{self.rua}, {self.numero} em {self.cidade}"
 
 
-class Contato(db.Model):
+class Contatos(db.Model):
     """The contacts."""
 
-    __tablename__ = 'contato'
+    __tablename__ = 'contatos'
 
     id = db.Column(db.Integer, primary_key=True)
     tel1 = db.Column(db.NVARCHAR(13))
     tel2 = db.Column(db.NVARCHAR(13))
     email = db.Column(db.NVARCHAR(30))
-    cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'))
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='contato')
 
     def _init_(self, tel1, tel2, email):
@@ -125,14 +123,14 @@ class Contato(db.Model):
         """
 
 
-class Venda(db.Model):
+class Vendas(db.Model):
     """
     Cadastro de Vendas
 
     descricao, data_venda, valor_venda, valor_taxi, n_banhos,
     tipo, pacote, forma_pagto, data_pagto, valor_entrada
     """
-    __tablename__ = 'venda'
+    __tablename__ = 'vendas'
 
     id = db.Column(db.Integer, primary_key=True)
     descricao = db.Column(db.Text, nullable=False)
@@ -145,10 +143,10 @@ class Venda(db.Model):
     forma_pagto = db.Column(db.Enum('cash', 'debito', 'credito', 'cheque', 'pendente'), nullable=False)
     data_pagto = db.Column(db.Date, nullable=False)
     valor_entrada = db.Column(db.Numeric, nullable=False)
-    cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'))
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='venda')
-    cachorro_id = db.Column(db.Integer, db.ForeignKey('cachorro.id'))
-    # cachorro = db.relationship('Cachorro', back_populates='venda')
+    peludo_id = db.Column(db.Integer, db.ForeignKey('peludos.id'))
+    # peludo = db.relationship('Peludo', back_populates='venda')
 
 
     def _init_(

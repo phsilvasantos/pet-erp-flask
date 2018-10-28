@@ -23,7 +23,7 @@
             <a class="nav-link" href="{{ url_for('core.index') }}">Home<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Vendas</a>
+            <a class="nav-link" href="{{ url_for('core.cadastro_vendas') }}">Vendas</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,11 +42,25 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="{{ url_for('core.cadastro_clientes') }}">Clientes</a>
-              <a class="dropdown-item" href="{{ url_for('core.lista_clientes') }}">Cães</a>
+              <a class="dropdown-item" href="{{ url_for('core.cadastro_peludos') }}">Peludos</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Tudo junto</a>
+              <a class="dropdown-item" href="{{ url_for('core.cadastro_vendas') }}">Vendas</a>
             </div>
           </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Consulta
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('core.lista_clientes') }}">Clientes</a>
+              <a class="dropdown-item" href="{{ url_for('core.lista_clientes') }}">Peludos</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Vendas</a>
+            </div>
+          </li>
+
+
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Log in</a>
           </li>

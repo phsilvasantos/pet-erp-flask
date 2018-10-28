@@ -1,6 +1,6 @@
 """Testing crud."""
 from pet import db
-from pet.models import Cliente, Cachorro, Venda, Contato, Endereco
+from pet.models import Cliente, Peludo, Venda, Contato, Endereco
 from datetime import datetime
 import pandas as pd
 
@@ -11,7 +11,7 @@ import pandas as pd
 Cliente.query.all()
 
 aline = Cliente.query.filter_by(nome='Aline').first()
-puka = Cachorro.query.filter_by(nome='Puka').first()
+puka = Peludo.query.filter_by(nome='Puka').first()
 
 sale = Venda(
         descricao='tosa na tesoura', data_venda=datetime(2018, 10, 12),
@@ -31,7 +31,7 @@ puka.venda.append(sale)
 
 ####
 comprador = Cliente.query.filter(Cliente.nome.ilike('marcelo')).first()
-cao = Cachorro.query.filter(Cachorro.nome.ilike('leon')).first()
+cao = Peludo.query.filter(Peludo.nome.ilike('leon')).first()
 
 sale = Venda(
         descricao='tosa na maquina', data_venda=datetime(2018, 9, 12),
@@ -47,16 +47,16 @@ db.session.add_all([aline, puka, comprador, cao])
 db.session.commit()
 
 
-# mostra o nome do dono e do Cachorro
+# mostra o nome do dono e do Peludo
 query = db.session.query(
     Cliente.nome.label("Cliente"),
     Contato.email.label("mail"),
-    Cachorro.nome.label("dog"),
-    Cachorro.breed.label('raça'),
+    Peludo.nome.label("dog"),
+    Peludo.breed.label('raça'),
     Venda.data_venda.label('data'),
     Venda.valor_entrada.label('valor'),
     Venda.descricao
-    ).join(Contato, Cachorro, Venda)
+    ).join(Contato, Peludo, Venda)
 
 
 help(db.session.query().join)

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4">Cadastro de Vendas</h1>
+
+    {% if cliente %}
+
+    <h3>Digite os dados da venda para {{ nome_cliente }}</h3>
+
+    {{ wtf.quick_form(
+                        form, method='POST', form_type='horizontal',
+                        horizontal_columns=('lg', 5 , 7),
+                        button_map={'submit':'primary'}
+                    )
+    }}
+
+    {% else %}
+
+    <h3>Escolha o cliente:</h3>
+
+    {{ wtf.quick_form(
+                        form, method='POST', form_type='horizontal',
+                        horizontal_columns=('lg', 5 , 7),
+                        button_map={'submit':'primary'}
+                    )
+    }}
+
+
+    {% endif %}
+
+
+
+  </div>
+</div>
+
+
+{% endblock %}
