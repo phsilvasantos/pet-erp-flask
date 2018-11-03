@@ -1,6 +1,6 @@
 """Testing crud."""
-from pet import db
-from pet.models import Cliente, Peludo, Contato, Endereco, Venda
+from petshop import db
+from petshop.models import *
 
 from datetime import datetime
 import pandas as pd
@@ -21,10 +21,11 @@ db.session.commit()
 
 ## read Cliente
 
-Cliente.query.all()
-Peludo.query.all()
+Clientes.query.all()
+Peludos.query.all()
 
-Cliente.query.get(1).nome
+teste = Clientes.query.get(1)
+teste
 Cliente.query.filter_by(nome='Aline').first()
 
 

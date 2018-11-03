@@ -4,20 +4,68 @@
 {% block content %}
 
 
-<div class="jumbotron">
-  <div class="container">
-    <h1 class="display-4">Cadastro de Peludos</h1>
+<div class="container">
+    <h1 class="display-3">Cadastro de Peludos</h1>
+    <div class="jumbotron">
     <h3>Preencha abaixo os dados do seu peludo:</h3>
 
-    {{ wtf.quick_form(
-                        form, method='POST', form_type='horizontal',
-                        horizontal_columns=('lg', 5 , 7),
-                        button_map={'submit':'primary'}
-                    )
-    }}
+    <form method="POST">
+    {{ form.hidden_tag() }}
 
+    <div class="form-row align-items-center">
 
-  </div>
+        <div class="form-group col-md-2">
+        {{ form.nome.label }}
+        {{ form.nome(class_="form-control") }}
+        </div>
+
+        <div class="form-group col-md-2">
+        {{ form.sexo.label }}
+        {{ form.sexo(class_="form-control") }}
+        </div>
+
+        <div class="form-group col-md-2">
+        {{ form.cliente.label }}
+        {{ form.cliente(class_="form-control") }}
+        </div>
+    </div>
+
+    <div class="form-row align-items-center">
+
+        <div class="form-group col-md-2">
+        {{ form.breed.label }}
+        {{ form.breed(class_="form-control") }}
+        </div>
+
+        <div class="form-group col-md-2">
+        {{ form.pelagem.label }}
+        {{ form.pelagem(class_="form-control") }}
+        </div>
+
+        <div class="form-group col-md-2">
+        {{ form.castrado.label }}
+        {{ form.castrado(class_="form-control") }}
+        </div>
+
+    </div>
+    <div class="form-row align-items-center">
+
+        <div class="form-group col-md-2">
+        {{ form.nascimento.label }}
+        {{ form.nascimento(class_="form-control") }}
+        </div>
+
+        <div class="form-group col-md-2">
+        {{ form.data_start.label }}
+        {{ form.data_start(class_="form-control") }}
+        </div>
+
+        {{ form.submit(class_="btn btn-primary btn-lg") }}
+    </div>
+
+    </form>
+
+    </div>
 </div>
 
 

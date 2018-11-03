@@ -1,20 +1,20 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
 from petshop.forms import Form_clientes, Form_peludos, Form_vendas_intro, Form_vendas
-from petshop.models import Clientes, Peludos, Vendas, Contatos, Enderecos
-# from wtforms.ext.sqlalchemy.orm import model_form
-# from wtforms_alchemy import ModelForm
-
+from petshop.models import Clientes, Peludos, Contatos, Enderecos
 
 core = Blueprint('core', __name__)
 
+
 @core.route('/')
 def index():
+    """Index page."""
     return render_template('index.html')
 
 
 @core.route('/cadastro_clientes', methods=['GET', 'POST'])
 def cadastro_clientes():
+    """Cadastra clientes."""
     form = Form_clientes()
 
     if form.validate_on_submit():
@@ -30,10 +30,10 @@ def cadastro_clientes():
         estado = form.estado.data
         distancia = form.distancia.data
 
-        #db part
+        # db part
         n_cliente = Clientes(nome=nome, sexo=sexo)
         n_endereco = Enderecos(rua=rua, numero=numero, bairro=bairro, cidade=cidade,
-            estado=estado, distancia=distancia)
+                               estado=estado, distancia=distancia)
 
         n_contato = Contatos(tel1=tel1, tel2=tel2, email=email)
 
@@ -49,7 +49,7 @@ def cadastro_clientes():
 
 @core.route('/cadastro_peludos', methods=['GET', 'POST'])
 def cadastro_peludos():
-
+    """Cadastra peludos."""
     clientes_cadastrados = db.session.query(Clientes).all()
     lista_clientes = [(i.id, i.nome) for i in clientes_cadastrados]
 
@@ -62,9 +62,20 @@ def cadastro_peludos():
         sexo = form.sexo.data
         breed = form.breed.data
         pelagem = form.pelagem.data
-        nascimento = form.nascimento.data.strftime('%d-%m-%Y')
-        data_start = form.data_start.data.strftime('%d-%m-%Y')
+        nascimento = form.nascimento.data
+        data_start = form.data_start.data
         castrado = form.castrado.data
+
+        # db part
+        n_peludo = Peludos(nome, breed, pelagem, nascimento,
+                           data_start, sexo, castrado)
+
+        n_cliente = Clientes.query.get(cliente)
+
+        db.session.add(n_peludo)
+        n_cliente.peludo.append(n_peludo)
+        db.session.commit()
+
         return redirect(url_for('core.lista_clientes'))
 
     return render_template('cadastro_peludos.html', form=form)
@@ -72,7 +83,7 @@ def cadastro_peludos():
 
 @core.route('/cadastro_vendas', methods=['GET', 'POST'])
 def cadastro_vendas():
-
+    """Cadastra vendas."""
     cliente = request.args.get('cliente', None)
 
     # se o cliente já foi escolhido, listar os caes e apresentar o form de vendas

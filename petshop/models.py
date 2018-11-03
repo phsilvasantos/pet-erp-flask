@@ -140,14 +140,14 @@ class Vendas(db.Model):
     n_banhos = db.Column(db.INT, nullable=False)
     tipo = db.Column(db.Enum('pacote', 'avulso'), nullable=False)
     pacote = db.Column(db.NVARCHAR(10), nullable=False)
-    forma_pagto = db.Column(db.Enum('cash', 'debito', 'credito', 'cheque', 'pendente'), nullable=False)
+    forma_pagto = db.Column(
+        db.Enum('cash', 'debito', 'credito', 'cheque', 'pendente'), nullable=False)
     data_pagto = db.Column(db.Date, nullable=False)
     valor_entrada = db.Column(db.Numeric, nullable=False)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='venda')
     peludo_id = db.Column(db.Integer, db.ForeignKey('peludos.id'))
     # peludo = db.relationship('Peludo', back_populates='venda')
-
 
     def _init_(
         self, descricao, data_venda, valor_venda, valor_taxi, n_banhos,
