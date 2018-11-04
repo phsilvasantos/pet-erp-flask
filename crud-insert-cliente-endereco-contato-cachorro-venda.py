@@ -1,8 +1,10 @@
 """Testing crud."""
 from petshop import db
-from petshop.models import Clientes, Peludos, Contatos, Enderecos, Vendas
+from petshop.models import Clientes, Peludos, Contatos, Enderecos, Vendas_bt
 from datetime import datetime
 import pandas as pd
+
+
 
 contato_info = Contatos(
                         tel1='11-95276-2922',
@@ -71,6 +73,29 @@ cliente_info.peludo.extend([cao_info, cao_info2])
 db.session.add(cliente_info)
 db.session.commit()
 
+########
+
+contato_info = Contatos(
+                        tel1='11-testeErick',
+                        tel2='11-testeErick-2',
+                        email='testeErick@gmail.com'
+                        )
+
+endereco_info = Enderecos(
+                        rua='Rua testeErick', numero=666,
+                        bairro='Bairro testeErick', cidade='testeErick',
+                        estado='AL', distancia=1000
+                        )
+
+
+
+cliente_info = Clientes('testeErick', 'H')
+
+cliente_info.contato.append(contato_info)
+cliente_info.endereco.append(endereco_info)
+
+db.session.add(cliente_info)
+db.session.commit()
 
 
 # mostra o nome do dono e do peludo

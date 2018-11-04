@@ -46,7 +46,6 @@ cao.venda.append(sale)
 # db.session.add_all([aline, puka, comprador, cao])
 db.session.commit()
 
-
 # mostra o nome do dono e do Peludo
 query = db.session.query(
     Clientes.nome.label("Cliente"),
@@ -67,3 +66,7 @@ for item in query.all():
 # coloca em df
 df = pd.read_sql(query.statement, db.session.bind)
 df
+
+##########
+Vendas.query.all()
+### Cadastro Pagamentos

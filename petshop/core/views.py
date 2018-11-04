@@ -50,7 +50,7 @@ def cadastro_clientes():
 @core.route('/cadastro_peludos', methods=['GET', 'POST'])
 def cadastro_peludos():
     """Cadastra peludos."""
-    clientes_cadastrados = db.session.query(Clientes).all()
+    clientes_cadastrados = Clientes.query.all()
     lista_clientes = [(i.id, i.nome) for i in clientes_cadastrados]
 
     form = Form_peludos()
@@ -88,7 +88,8 @@ def cadastro_vendas():
 
     # se o cliente já foi escolhido, listar os caes e apresentar o form de vendas
     if cliente:
-        peludos_cadastrados = db.session.query(Peludos).filter(Peludos.cliente_id == cliente).all()
+        # peludos_cadastrados = db.session.query(Peludos).filter(Peludos.cliente_id == cliente).all()
+        peludos_cadastrados = Peludos.query.filter(Peludos.cliente_id == cliente).all()
         lista_peludos = [(i.id, i.nome) for i in peludos_cadastrados]
 
         form = Form_vendas()
