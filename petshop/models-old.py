@@ -14,7 +14,10 @@ class Clientes(db.Model):
     sexo = db.Column(db.Enum('M', 'H'), nullable=False)
 
     peludo = db.relationship('Peludos', backref='clientes', lazy=True)
-    venda = db.relationship('Vendas', backref='clientes', lazy=True)
+    venda_bt = db.relationship('Vendas_bt', backref='clientes', lazy=True)
+    venda_hot = db.relationship('Vendas_hot', backref='clientes', lazy=True)
+    venda_cur = db.relationship('Vendas_cur', backref='clientes', lazy=True)
+    venda_prod = db.relationship('Vendas_prod', backref='clientes', lazy=True)
     contato = db.relationship('Contatos')
     endereco = db.relationship('Enderecos')
 
@@ -56,7 +59,8 @@ class Peludos(db.Model):
     castrado = db.Column(db.Enum('S', 'N'), nullable=False)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
 
-    venda = db.relationship('Vendas', backref='peludos', lazy=True)
+    venda_bt = db.relationship('Vendas_bt', backref='peludos', lazy=True)
+    venda_hot = db.relationship('Vendas_hot', backref='peludos', lazy=True)
 
     def get_idade(self):
         """Calcula a idade."""
@@ -139,41 +143,30 @@ class Contatos(db.Model):
         """
 
 
-class Vendas(db.Model):
+class Vendas_bt(db.Model):
     """
-    Cadastro de Vendas - todos os tipos.
+    Cadastro de Vendas de banho e tosa.
 
     descricao, data_venda, data_pbanho,
     valor_servicos, valor_taxi, n_banhos, tipo, pacote
     """
 
-    __tablename__ = 'vendas'
+    __tablename__ = 'vendas_bt'
 
-    # comum
     id = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.NVARCHAR(10), nullable=False)
     descricao = db.Column(db.Text, nullable=False)
     data_venda = db.Column(db.Date, nullable=False)
-    valor_servicos = db.Column(db.Float, nullable=True)
-    valor_taxi = db.Column(db.Float, nullable=True)
+    data_pbanho = db.Column(db.Date, nullable=False)
+    valor_servicos = db.Column(db.Float, nullable=False)
+    valor_taxi = db.Column(db.Float, nullable=False)
+    n_banhos = db.Column(db.Integer, nullable=False)
+    tipo_banho = db.Column(db.Enum('pacote', 'avulso', 'cortesia'), nullable=False)
+    pacote = db.Column(db.NVARCHAR(10), nullable=False)
+
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     peludo_id = db.Column(db.Integer, db.ForeignKey('peludos.id'))
+
     pagamentos = db.relationship('Pagamentos')
-
-    # banho e tosa
-    data_pbanho = db.Column(db.Date, nullable=True)
-    n_banhos = db.Column(db.Integer, nullable=True)
-    tipo_banho = db.Column(db.Enum('pacote', 'avulso', 'cortesia'), nullable=True)
-    pacote = db.Column(db.NVARCHAR(10), nullable=True)
-
-    # hospedagem
-    data_entrada = db.Column(db.Date, nullable=True)
-    data_saida = db.Column(db.Date, nullable=True)
-    valor_diarias = db.Column(db.Float, nullable=True)
-
-    # produtos
-    valor_prod = db.Column(db.Float, nullable=True)
-    custo_prod = db.Column(db.Float, nullable=True)
 
     def saldo(self):
         """Calcula o saldo desta venda."""
@@ -188,26 +181,18 @@ class Vendas(db.Model):
         return valor_total
 
     def _init_(
-                self, custo, data_entrada, data_pbanho, data_saida, data_venda,
-                descricao, n_banhos, pacote, pagamentos, tipo_banho, valor,
-                valor_diarias, valor_servicos, valor_taxi, tipo
+        self, descricao, data_venda, data_pbanho,
+        valor_servicos, valor_taxi, n_banhos, tipo_banho, pacote
             ):
 
-        self.custo = custo
-        self.data_entrada = data_entrada
-        self.data_pbanho = data_pbanho
-        self.data_saida = data_saida
-        self.data_venda = data_venda
         self.descricao = descricao
-        self.n_banhos = n_banhos
-        self.pacote = pacote
-        self.pagamentos = pagamentos
-        self.tipo_banho = tipo_banho
-        self.valor = valor
-        self.valor_diarias = valor_diarias
+        self.data_venda = data_venda
+        self.data_pbanho = data_pbanho
         self.valor_servicos = valor_servicos
         self.valor_taxi = valor_taxi
-        self.tipo = tipo
+        self.n_banhos = n_banhos
+        self.tipo_banho = tipo_banho
+        self.pacote = pacote
         self.saldo = self.saldo()
 
     def __repr__(self):
@@ -216,6 +201,117 @@ class Vendas(db.Model):
         {self.descricao}, em {self.data_venda} no valor de {self.valor_servicos}
         para {Clientes.query.get(self.cliente_id).nome}
         Saldo: R${self.saldo()}
+        """
+
+
+class Vendas_hot(db.Model):
+    """
+    Cadastro de Vendas de hospedagem.
+
+    descricao, data_venda, data_entrada, data_saida,
+    valor_diarias, valor_servicos, valor_taxi
+    """
+
+    __tablename__ = 'vendas_hot'
+
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.Text, nullable=False)
+    data_venda = db.Column(db.Date, nullable=False)
+    data_entrada = db.Column(db.Date, nullable=False)
+    data_saida = db.Column(db.Date, nullable=False)
+    valor_diarias = db.Column(db.Float, nullable=False)
+    valor_servicos = db.Column(db.Float, nullable=False)
+    valor_taxi = db.Column(db.Float, nullable=False)
+
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+    peludo_id = db.Column(db.Integer, db.ForeignKey('peludos.id'))
+
+    pagamentos = db.relationship('Pagamentos')
+
+    def _init_(
+        self, descricao, data_venda, data_entrada, data_saida,
+        valor_diarias, valor_servicos, valor_taxi
+            ):
+
+        self.descricao = descricao
+        self.data_venda = data_venda
+        self.data_entrada = data_entrada
+        self.data_saida = data_saida
+        self.valor_diarias = valor_diarias
+        self.valor_servicos = valor_servicos
+        self.valor_taxi = valor_taxi
+
+    def __repr__(self):
+        """Representação."""
+        return f"""
+        {self.descricao}, em {self.data_venda} no valor de {self.valor_diarias}
+        para {Clientes.query.get(self.cliente_id).nome}
+        """
+
+
+class Vendas_cur(db.Model):
+    """
+    Cadastro de Vendas de cursos.
+
+    descricao, data_venda, data_entrada, valor_servicos
+    """
+
+    __tablename__ = 'vendas_cur'
+
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.Text, nullable=False)
+    data_venda = db.Column(db.Date, nullable=False)
+    data_entrada = db.Column(db.Date, nullable=False)
+    valor_servicos = db.Column(db.Float, nullable=False)
+
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+
+    pagamentos = db.relationship('Pagamentos')
+
+    def _init_(self, descricao, data_venda, data_entrada, valor_servicos):
+
+        self.descricao = descricao
+        self.data_venda = data_venda
+        self.data_entrada = data_entrada
+        self.valor_servicos = valor_servicos
+
+    def __repr__(self):
+        """Representação."""
+        return f"""
+        {self.descricao}, em {self.data_venda} no valor de {self.valor_servicos}
+        para {Clientes.query.get(self.cliente_id).nome}
+        """
+
+
+class Vendas_prod(db.Model):
+    """
+    Cadastro de Vendas de produtos.
+
+    descricao, data_venda, valor
+    """
+
+    __tablename__ = 'vendas_prod'
+
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.Text, nullable=False)
+    data_venda = db.Column(db.Date, nullable=False)
+    valor = db.Column(db.Float, nullable=False)
+
+    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+
+    pagamentos = db.relationship('Pagamentos')
+
+    def _init_(self, descricao, data_venda, valor):
+
+        self.descricao = descricao
+        self.data_venda = data_venda
+        self.valor = valor
+
+    def __repr__(self):
+        """Representação."""
+        return f"""
+        {self.descricao}, em {self.data_venda} no valor de {self.valor}
+        para {Clientes.query.get(self.cliente_id).nome}
         """
 
 
@@ -238,7 +334,10 @@ class Pagamentos(db.Model):
         db.Enum('cash', 'debito', 'credito', 'cheque', 'pendente'), nullable=False)
     # # data_pagto = db.Column(db.Date, nullable=False)
     # valor_entrada = db.Column(db.Numeric, nullable=False)
-    venda_id = db.Column(db.Integer, db.ForeignKey('vendas.id'))
+    venda_bt_id = db.Column(db.Integer, db.ForeignKey('vendas_bt.id'))
+    venda_hot_id = db.Column(db.Integer, db.ForeignKey('vendas_hot.id'))
+    venda_cur_id = db.Column(db.Integer, db.ForeignKey('vendas_cur.id'))
+    venda_pro_id = db.Column(db.Integer, db.ForeignKey('vendas_prod.id'))
     # PrimaryKeyConstraint('id', 'version_id', name='mytable_pk')
 
     def _init_(

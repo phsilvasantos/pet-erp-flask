@@ -63,6 +63,18 @@ query = db.session.query(
                         ).join(Peludos, Vendas_bt, Pagamentos)
 
 
+# listando os pagamentos para uma venda
+venda = Vendas_bt.query.first()
+venda
+
+venda.pagamentos
+venda.saldo()
+
+
+
 # coloca em df
+
+
+
 df = pd.read_sql(query.statement, db.session.bind)
 df
