@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
-from petshop.forms import Form_clientes, Form_peludos, Form_vendas_intro, Form_vendas
+from petshop.forms import Form_clientes, Form_peludos
 from petshop.models import Clientes, Peludos, Contatos, Enderecos
 
 views_cadastros = Blueprint('views_cadastros', __name__)
@@ -36,7 +36,7 @@ def cadastro_clientes():
         db.session.add(n_cliente)
         db.session.commit()
 
-        return redirect(url_for('core.lista_clientes'))
+        return redirect(url_for('views_consultas.lista_clientes'))
 
     return render_template('cadastro_clientes.html', form=form)
 
@@ -70,6 +70,6 @@ def cadastro_peludos():
         n_cliente.peludo.append(n_peludo)
         db.session.commit()
 
-        return redirect(url_for('core.lista_clientes'))
+        return redirect(url_for('views_consultas.lista_clientes'))
 
     return render_template('cadastro_peludos.html', form=form)

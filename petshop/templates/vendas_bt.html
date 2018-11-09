@@ -19,6 +19,12 @@
 {{ form.hidden_tag() }}
 
 <div class="row align-items-center">
+
+    <div class="col-auto">
+    {{ form.data_venda.label }}
+    {{ form.data_venda(class_="form-control input-group date") }}
+    </div>
+    
     <div class="form-group col-md-2">
     {{ form.valor_taxi.label }}
     {{ form.valor_taxi(class_="form-control") }}
@@ -29,10 +35,7 @@
     {{ form.valor_servicos(class_="form-control") }}
     </div>
 
-    <div class="form-group col-md-3">
-    {{ form.valor_entrada.label }}
-    {{ form.valor_entrada(class_="form-control") }}
-    </div>
+
 </div>
 
 <div class="row align-items-center">
@@ -47,8 +50,8 @@
 <div class="row align-items-center">
 
     <div class="form-group col-md-3">
-    {{ form.tipo.label }}
-    {{ form.tipo(class_="form-control") }}
+    {{ form.tipo_banho.label }}
+    {{ form.tipo_banho(class_="form-control") }}
     </div>
 
     <div class="form-group col-md-3">
@@ -64,10 +67,7 @@
     {{ form.n_banhos(class_="form-control") }}
     </div>
 
-    <div class="form-group col-md-3">
-    {{ form.forma_pagto.label }}
-    {{ form.forma_pagto(class_="form-control") }}
-    </div>
+
 
 </div>
 
@@ -78,9 +78,11 @@
     {{ form.peludos(class_="form-control") }}
     </div>
 
+
+
     <div class="col-auto">
-    {{ form.data_pagto.label }}
-    {{ form.data_pagto(class_="form-control input-group date") }}
+    {{ form.data_pbanho.label }}
+    {{ form.data_pbanho(class_="form-control input-group date") }}
     </div>
 
     {{ form.submit(class_="btn btn-primary btn-lg") }}

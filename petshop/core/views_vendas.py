@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
-from petshop.forms import Form_clientes, Form_peludos, Form_vendas_intro, Form_vendas
+from petshop.forms import Form_clientes, Form_peludos, Form_vendas_intro, Form_vendas_bt
 from petshop.models import Clientes, Peludos, Contatos, Enderecos
 
 views_vendas = Blueprint('views_vendas', __name__)
@@ -25,12 +25,13 @@ def vendas_bt():
         peludos_cadastrados = Peludos.query.filter(Peludos.cliente_id == cliente).all()
         lista_peludos = [(i.id, i.nome) for i in peludos_cadastrados]
 
-        form = Form_vendas()
+        form = Form_vendas_bt()
         form.peludos.choices = lista_peludos
         nome_cliente = Clientes.query.filter_by(id=cliente).first().nome
         if form.validate_on_submit():
-            peludos = form.peludos.data
-            return redirect(url_for('views_vendas.index'))
+            # peludos = form.peludos.data
+            # atribuir ao db
+            return redirect(url_for('views_consultas.index'))
 
         return render_template(
                                 'vendas_bt.html',

@@ -84,7 +84,7 @@ class Form_vendas_bt(FlaskForm):
     data_venda = DateField('Data da venda', default=datetime.today(),
                            validators=[DataRequired()])
 
-    valor_servicos = DecimalField('Valor de serviços de B&T',
+    valor_servicos = DecimalField('Valor de serviços',
                                   validators=[DataRequired()]
                                   )
 

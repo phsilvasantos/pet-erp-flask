@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
-from petshop.forms import Form_clientes, Form_peludos, Form_vendas_intro, Form_vendas
+from petshop.forms import Form_clientes, Form_peludos
 from petshop.models import Clientes, Peludos, Contatos, Enderecos
 
 views_consultas = Blueprint('views_consultas', __name__)

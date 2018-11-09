@@ -1,6 +1,6 @@
 """Testing crud."""
 from petshop import db
-from petshop.models import Clientes, Peludos, Contatos, Enderecos, Vendas_bt
+from petshop.models import Clientes, Peludos, Contatos, Enderecos, Vendas
 from datetime import datetime
 import pandas as pd
 
@@ -99,14 +99,17 @@ db.session.commit()
 
 
 # mostra o nome do dono e do peludo
-query = db.session.query(
+query = (
+        db.session.query(
                             Clientes.nome.label("Cliente"),
                             Peludos.nome.label("dog"),
                             Peludos.breed.label('raça'),
                             Peludos.nascimento.label('idade'),
                             Enderecos.rua.label('Rua'),
                             Contatos.email.label('email')
-                        ).join(Peludos, Enderecos, Contatos)
+                        )
+        .join(Peludos, Enderecos, Contatos)
+        )
 
 # retorna resultado em tuplas
 for item in query.all():

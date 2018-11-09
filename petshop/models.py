@@ -188,12 +188,24 @@ class Vendas(db.Model):
         return valor_total
 
     def _init_(
-                self, custo, data_entrada, data_pbanho, data_saida, data_venda,
-                descricao, n_banhos, pacote, pagamentos, tipo_banho, valor,
-                valor_diarias, valor_servicos, valor_taxi, tipo
+                self,
+                custo_prod=np.nan,
+                data_entrada=np.nan,
+                data_pbanho=np.nan,
+                data_saida=np.nan,
+                data_venda=np.nan,
+                descricao='uma venda',
+                n_banhos=np.nan,
+                pacote=np.nan,
+                tipo_banho=np.nan,
+                tipo='bt',
+                valor_diarias=np.nan,
+                valor_prod=np.nan,
+                valor_servicos=np.nan,
+                valor_taxi=np.nan,
             ):
 
-        self.custo = custo
+        self.custo_prod = custo_prod
         self.data_entrada = data_entrada
         self.data_pbanho = data_pbanho
         self.data_saida = data_saida
@@ -201,13 +213,12 @@ class Vendas(db.Model):
         self.descricao = descricao
         self.n_banhos = n_banhos
         self.pacote = pacote
-        self.pagamentos = pagamentos
+        self.tipo = tipo
         self.tipo_banho = tipo_banho
-        self.valor = valor
         self.valor_diarias = valor_diarias
+        self.valor_prod = valor_prod
         self.valor_servicos = valor_servicos
         self.valor_taxi = valor_taxi
-        self.tipo = tipo
         self.saldo = self.saldo()
 
     def __repr__(self):
