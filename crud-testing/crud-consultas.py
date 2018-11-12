@@ -1,6 +1,6 @@
 """Testing crud."""
 from petshop import db
-from petshop.models import Clientes, Peludos, Vendas, Contatos, Enderecos
+from petshop.modelos.models import Clientes, Peludos, Vendas, Contatos, Enderecos
 from datetime import datetime
 import pandas as pd
 

@@ -1,6 +1,6 @@
 """Testing crud."""
 from petshop import db
-from petshop.models import Clientes, Peludos, Vendas, Pagamentos, Contatos
+from petshop.modelos.models import Clientes, Peludos, Vendas, Pagamentos, Contatos
 from datetime import datetime
 import pandas as pd
 
@@ -70,3 +70,7 @@ df
 ##########
 Vendas.query.all()
 ### Cadastro Pagamentos
+venda = Vendas.query.filter_by(valor_servicos=501).first()
+
+venda
+venda.valor_taxi

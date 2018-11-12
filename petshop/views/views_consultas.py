@@ -1,7 +1,7 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
-from petshop.forms import Form_clientes, Form_peludos
-from petshop.models import Clientes, Peludos, Contatos, Enderecos
+from petshop.modelos.forms import Form_clientes, Form_peludos
+from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos, Vendas
 
 views_consultas = Blueprint('views_consultas', __name__)
 
@@ -9,7 +9,15 @@ views_consultas = Blueprint('views_consultas', __name__)
 @views_consultas.route('/')
 def index():
     """Index page."""
-    return render_template('index.html')
+
+    ########
+    venda_comsaldo = Vendas.query.filter(Vendas.saldo != 0).all()
+
+    # for item in venda_comsaldo:
+    #     print(item.saldo(), item.descricao)
+
+
+    return render_template('index.html', venda_comsaldo=venda_comsaldo)
 
 
 

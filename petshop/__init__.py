@@ -22,10 +22,12 @@ db = SQLAlchemy(app)
 Migrate(app, db)
 
 
-from petshop.core.views_cadastros import views_cadastros
-from petshop.core.views_consultas import views_consultas
-from petshop.core.views_vendas import views_vendas
+from petshop.views.views_cadastros import views_cadastros
+from petshop.views.views_consultas import views_consultas
+from petshop.views.views_vendas import views_vendas
+from petshop.views.views_pagamentos import views_pagamentos
 
 app.register_blueprint(views_cadastros)
 app.register_blueprint(views_consultas)
 app.register_blueprint(views_vendas)
+app.register_blueprint(views_pagamentos)

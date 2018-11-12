@@ -8,7 +8,7 @@ from wtforms_components import (
                     )
 from wtforms.fields import SubmitField
 from wtforms.validators import DataRequired, Email
-# import dash_core_components as dcc
+# import dash_views_components as dcc
 
 
 class Form_clientes(FlaskForm):

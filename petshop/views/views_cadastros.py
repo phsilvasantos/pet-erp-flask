@@ -1,7 +1,7 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
-from petshop.forms import Form_clientes, Form_peludos
-from petshop.models import Clientes, Peludos, Contatos, Enderecos
+from petshop.modelos.forms import Form_clientes, Form_peludos
+from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos
 
 views_cadastros = Blueprint('views_cadastros', __name__)
 

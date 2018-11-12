@@ -20,7 +20,6 @@ class Clientes(db.Model):
 
     def lista_peludos(self):
         """Lista os cães deste cliente."""
-        # caes_cliente = Clientes.query.filter_by(nome=self.nome).first().peludo
         caes_cliente = self.peludo
         caes_cliente = [i.nome for i in caes_cliente]
         if caes_cliente:
@@ -234,7 +233,7 @@ class Pagamentos(db.Model):
     """
     Cadastro de pagamentos.
 
-    data, valor, forma_pagto, valor_entrada
+    data, valor, forma_pagto, valor, valor_entrada, forma_pagto
     """
 
     __tablename__ = 'pagamentos'

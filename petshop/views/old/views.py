@@ -1,18 +1,18 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
-from petshop.forms import Form_clientes, Form_peludos, Form_vendas_intro, Form_vendas
-from petshop.models import Clientes, Peludos, Contatos, Enderecos
+from petshop.modelos.forms import Form_clientes, Form_peludos, Form_vendas_intro, Form_vendas
+from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos
 
-core = Blueprint('core', __name__)
+views = Blueprint('views', __name__)
 
 
-@core.route('/')
+@views.route('/')
 def index():
     """Index page."""
     return render_template('index.html')
 
 
-@core.route('/cadastro_clientes', methods=['GET', 'POST'])
+@views.route('/cadastro_clientes', methods=['GET', 'POST'])
 def cadastro_clientes():
     """Cadastra clientes."""
     form = Form_clientes()
@@ -42,12 +42,12 @@ def cadastro_clientes():
         db.session.add(n_cliente)
         db.session.commit()
 
-        return redirect(url_for('core.lista_clientes'))
+        return redirect(url_for('views.lista_clientes'))
 
     return render_template('cadastro_clientes.html', form=form)
 
 
-@core.route('/cadastro_peludos', methods=['GET', 'POST'])
+@views.route('/cadastro_peludos', methods=['GET', 'POST'])
 def cadastro_peludos():
     """Cadastra peludos."""
     clientes_cadastrados = Clientes.query.all()
@@ -76,12 +76,12 @@ def cadastro_peludos():
         n_cliente.peludo.append(n_peludo)
         db.session.commit()
 
-        return redirect(url_for('core.lista_clientes'))
+        return redirect(url_for('views.lista_clientes'))
 
     return render_template('cadastro_peludos.html', form=form)
 
 
-@core.route('/cadastro_vendas', methods=['GET', 'POST'])
+@views.route('/cadastro_vendas', methods=['GET', 'POST'])
 def cadastro_vendas():
     """Cadastra vendas."""
     cliente = request.args.get('cliente', None)
@@ -97,7 +97,7 @@ def cadastro_vendas():
         nome_cliente = Clientes.query.filter_by(id=cliente).first().nome
         if form.validate_on_submit():
             peludos = form.peludos.data
-            return redirect(url_for('core.index'))
+            return redirect(url_for('views.index'))
 
         return render_template(
                                 'cadastro_vendas.html',
@@ -113,13 +113,13 @@ def cadastro_vendas():
 
     if form.validate_on_submit():
         cliente = form.cliente.data
-        return redirect(url_for('core.cadastro_vendas', cliente=cliente))
+        return redirect(url_for('views.cadastro_vendas', cliente=cliente))
 
     return render_template('cadastro_vendas.html', form=form)
 
 
 
-@core.route('/lista_clientes')
+@views.route('/lista_clientes')
 def lista_clientes():
     # page = request.args.get('page', 1, type=int)
     # listagem = Cliente.query.order_by(Cliente.nome).paginate(page=page, per_page=10)

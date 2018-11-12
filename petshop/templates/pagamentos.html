@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+
+
+<h1 class="display-3">Registro de pagamentos</h1>
+
+
+<div class="jumbotron">
+<h4>Venda: {{ descricao }}</h4>
+
+<hr>
+
+<div class="container">
+<form method="POST">
+{{ form.hidden_tag() }}
+
+<div class="row align-items-center">
+
+    <div class="form-group col-md-2">
+    {{ form.data.label }}
+    {{ form.data(class_="form-control input-group date") }}
+    </div>
+
+    <div class="form-group col-md-3">
+    {{ form.forma_pagto.label }}
+    {{ form.forma_pagto(class_="form-control") }}
+    </div>
+
+</div>
+
+<div class="row align-items-center">
+
+    <div class="form-group col-md-2">
+    {{ form.valor.label }}
+    {{ form.valor(class_="form-control") }}
+    </div>
+
+    <div class="form-group col-md-3">
+    {{ form.valor_entrada.label }}
+    {{ form.valor_entrada(class_="form-control") }}
+    </div>
+
+
+</div>
+
+
+<div class="row align-items-center">
+
+    {{ form.submit(class_="btn btn-primary btn-lg") }}
+
+</div>
+
+</form>
+</div>
+
+</div>
+
+
+{% endblock %}

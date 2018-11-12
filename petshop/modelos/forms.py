@@ -8,7 +8,6 @@ from wtforms_components import (
                     )
 from wtforms.fields import SubmitField
 from wtforms.validators import DataRequired, Email
-# import dash_core_components as dcc
 
 
 class Form_clientes(FlaskForm):
@@ -89,10 +88,12 @@ class Form_vendas_bt(FlaskForm):
                                   )
 
     valor_taxi = DecimalField('Valor do taxi dog', default=0,
-                              validators=[DataRequired()]
+                              # validators=[DataRequired()]
                               )
 
-    peludos = SelectMultipleField('Peludo(s)', choices=[], coerce=int)
+    peludos = SelectMultipleField('Peludo(s)', choices=[], coerce=int,
+                                  validators=[DataRequired()]
+                                  )
 
     data_pbanho = DateField('Data do primeiro banho', default=datetime.today(),
                             validators=[DataRequired()]
@@ -212,15 +213,22 @@ class Form_pagamentos(FlaskForm):
                               choices=[
                                         ('cash', 'cash'),
                                         ('debito', 'debito'),
+                                        ('transf', 'transferencia'),
                                         ('credito', 'credito'),
                                         ('cheque', 'cheque'),
-                                        ('pendente', 'pendente')
+                                        ('pendente', 'pendente'),
+                                        ('cortesia', 'cortesia')
                                         ],
                               validators=[DataRequired()]
                               )
 
-    data_pagto = DateField('Data de pagamento', default=datetime.today(),
+    data = DateField('Data de pagamento', default=datetime.today(),
                            validators=[DataRequired()])
+
+    valor = DecimalField(
+                                'Valor pago',
+                                validators=[DataRequired()]
+                                )
 
     valor_entrada = DecimalField(
                                 'Valor real de entrada',
