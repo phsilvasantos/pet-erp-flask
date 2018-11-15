@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<div class="container">
+    <h1 class="display-4">ERP</h1>
+    <p class="lead">Cadastro de clientes e registro de vendas</p>
+</div>
+
+<div class="jumbotron">
+
+<h3 class="display-5">Welcome! - listagens</h3>
+<hr>
+{% if listagem %}
+
+    <h3 class="display-5">{{ heading }}</h3>
+
+
+    <table class="table table-hover">
+    <thead>
+    <tr>
+    <th scope="col" colspan="2" class="tg">Clique para editar</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for item in listagem %}
+      <tr>
+
+        <td>
+        {{ item }}
+        <a href="{{ url_for('views_pagamentos.pagamentos', id=item.id) }}">Adicionar $</a> |
+        <a href="{{ url_for('views_vendas.modifica_venda', id=item.id) }}">Modificar</a>
+        </td>
+
+
+
+
+      </tr>
+
+    {% endfor %}
+    </tbody>
+    </table>
+
+
+<a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Nova venda BT</a>
+
+{% endif %}
+
+
+
+
+
+</div>
+{% endblock %}

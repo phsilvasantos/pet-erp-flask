@@ -6,7 +6,7 @@ from wtforms_components import (
                     DecimalField, DateField,
                     SelectMultipleField, DateRange
                     )
-from wtforms.fields import SubmitField
+from wtforms.fields import SubmitField, FloatField
 from wtforms.validators import DataRequired, Email
 
 
@@ -225,12 +225,12 @@ class Form_pagamentos(FlaskForm):
     data = DateField('Data de pagamento', default=datetime.today(),
                            validators=[DataRequired()])
 
-    valor = DecimalField(
+    valor = FloatField(
                                 'Valor pago',
                                 validators=[DataRequired()]
                                 )
 
-    valor_entrada = DecimalField(
+    valor_entrada = FloatField(
                                 'Valor real de entrada',
                                 validators=[DataRequired()]
                                 )

@@ -3,31 +3,17 @@
 
 
 
-  <div class="container">
-    <h1 class="display-4">Loucos por Cães ERP</h1>
+<div class="container">
+    <h1 class="display-4">ERP</h1>
     <p class="lead">Cadastro de clientes e registro de vendas</p>
-  </div>
+</div>
 
 <div class="jumbotron">
 
 <h3 class="display-5">Welcome!</h3>
 
-{% if venda_comsaldo %}
 
-    <h3 class="display-5">Alerta -  Vendas com saldo em aberto:</h3>
-
-    <ul>
-        {% for item in venda_comsaldo %}
-        <li>{{ "Saldo de {}, referente a {}".format(item.saldo(), item.descricao) }} </li>
-        {% endfor %}
-
-    </ul>
-
-{% endif %}
-
-
-
-
+index page
 
 </div>
 {% endblock %}

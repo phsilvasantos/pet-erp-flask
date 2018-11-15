@@ -1,6 +1,7 @@
 from petshop import db
 import datetime as dt
 import numpy as np
+import decimal
 
 class Clientes(db.Model):
     """O dono do peludo."""
@@ -157,6 +158,7 @@ class Vendas(db.Model):
     valor_taxi = db.Column(db.Float, nullable=True)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     peludo_id = db.Column(db.Integer, db.ForeignKey('peludos.id'))
+    saldo = db.Column(db.Float, nullable=True)
     pagamentos = db.relationship('Pagamentos')
 
     # banho e tosa
@@ -174,14 +176,15 @@ class Vendas(db.Model):
     valor_prod = db.Column(db.Float, nullable=True)
     custo_prod = db.Column(db.Float, nullable=True)
 
-    def saldo(self):
+    def calcula_saldo(self):
         """Calcula o saldo desta venda."""
         valor_total = self.valor_servicos + self.valor_taxi
         pagamentos = self.pagamentos
         if pagamentos:
             valores_pagos = [item.valor for item in pagamentos]
             valores_pagos = np.array(valores_pagos)
-            saldo = valor_total - valores_pagos.sum()
+            # saldo = decimal.Decimal(float(valor_total)) - decimal.Decimal(float(valores_pagos.sum()))
+            saldo = round(valor_total - valores_pagos.sum(), 2)
             return saldo
 
         return valor_total
@@ -224,8 +227,7 @@ class Vendas(db.Model):
         """Representação."""
         return f"""
         {self.descricao}, em {self.data_venda} no valor de {self.valor_servicos}
-        para {Clientes.query.get(self.cliente_id).nome}
-        Saldo: R${self.saldo()}
+        para {Clientes.query.get(self.cliente_id).nome} - saldo: R${self.calcula_saldo()}
         """
 
 

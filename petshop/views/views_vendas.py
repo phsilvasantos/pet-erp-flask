@@ -14,11 +14,21 @@ views_vendas = Blueprint('views_vendas', __name__)
 #                             ('prod', 'Produtos')
 #                             ]
 #                    )
+@views_vendas.route('/<int:id>', methods=['GET', 'POST'])
+def modifica_venda(id):
+    """Cadastra vendas."""
+    if(id):
+        listagem = Vendas.query.get_or_404(id)
+        return render_template('lista_vendas.html', listagem=listagem)
+
 
 
 @views_vendas.route('/vendas_bt', methods=['GET', 'POST'])
-def vendas_bt():
+def vendas_bt(id=None):
     """Cadastra vendas."""
+    if(id):
+        venda = Vendas.query.get_or_404(id)
+        return venda
 
     # se o cliente já foi escolhido,
     # listar os caes e apresentar o form de vendas
@@ -68,7 +78,7 @@ def vendas_bt():
             return redirect(
                             url_for(
                                     'views_pagamentos.pagamentos',
-                                    venda=venda_bt.id
+                                    id=venda_bt.id
                                     )
                             )
 

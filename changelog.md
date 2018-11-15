@@ -4,7 +4,13 @@
 
 - api
 - relatório vendas shows after cadastro_vendas
-- 2018-10-20: testing models
+
+2018-11-15
+- adicionar pagamentos - ok
+- lista somente se saldo for > 0 - ok
+- unificar listagens - halfway
+- modificar vendas - todo
+- modificar registros - todo
 
 
 ## structure
@@ -19,10 +25,12 @@ home    |vendas             | clientes          | Despesas      | Fornecedores |
 ###  vendas
 
 - tipo
-    - escolher cliente
-        - cadastro de venda
-            - incluir pagamentos
-                - últimas (listagem e alteração)
+    - listagem
+        - novo
+            - escolher cliente
+                - cadastro de venda
+                    - incluir pagamentos
+                        - últimas (listagem e alteração)
 
 - últimas (listagem e alteração)
 

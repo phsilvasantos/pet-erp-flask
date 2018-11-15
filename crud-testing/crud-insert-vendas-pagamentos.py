@@ -5,14 +5,14 @@ from datetime import datetime
 import pandas as pd
 
 venda_bt = Vendas(
-                data_pbanho=datetime(2018, 11, 1),
-                data_venda=datetime(2018, 11, 1),
-                descricao='barba e bigode',
-                n_banhos=5,
+                data_pbanho=datetime(2018, 11, 15),
+                data_venda=datetime(2018, 11, 15),
+                descricao='barba e bigode 2',
+                n_banhos=8,
                 pacote='puka',
                 tipo_banho='pacote',
                 tipo='bt',
-                valor_servicos=200,
+                valor_servicos=1200,
                 valor_taxi=0,
     )
 
@@ -33,14 +33,21 @@ db.session.commit()
 Vendas.query.all()
 
 ########
-pagamento = Pagamentos(data = datetime(2018, 11, 4), valor = 25,
-                        forma_pagto = 'credito', valor_entrada = 23)
+pagamento = Pagamentos(data = datetime(2018, 11, 15), valor = 222,
+                        forma_pagto = 'credito', valor_entrada = 222)
 
 
-venda = Vendas.query.first()
+venda = Vendas.query.get(3)
 venda
+venda.saldo
 venda.pagamentos.append(pagamento)
+
+venda.saldo = venda.calcula_saldo()
+
 db.session.commit()
+
+Vendas.query.filter(Vendas.saldo > 0).all()
+
 
 #### 2nd parcela
 pagamento = Pagamentos(data = datetime(2018, 11, 3), valor = 55,

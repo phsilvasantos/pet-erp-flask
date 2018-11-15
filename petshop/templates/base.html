@@ -17,13 +17,13 @@
 
     </script>
     <meta charset="utf-8">
-    <title>Loucos por Cães - ERP</title>
+    <title>Control Risks - ERP</title>
 </head>
 
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1">Loucos por Cães</span>
+    <span class="navbar-brand mb-0 h1">ERP</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
@@ -35,7 +35,7 @@
         </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('views_vendas.vendas_bt') }}">Banho&Tosa</a>
+        <a class="nav-link" href="{{ url_for('views_vendas.vendas_bt') }}">BT</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -43,12 +43,10 @@
             Vendas
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Banho & Tosa</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Hospedagem</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Cursos</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Produtos</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Últimas</a>
+                <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', tipo = 'bt') }}">BT</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Hosp</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Cur</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Prod</a>
             </div>
         </li>
 
@@ -58,7 +56,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{{ url_for('views_cadastros.cadastro_clientes') }}">Pessoas</a>
-                <a class="dropdown-item" href="{{ url_for('views_cadastros.cadastro_peludos') }}">Peludos</a>
+                <a class="dropdown-item" href="{{ url_for('views_cadastros.cadastro_peludos') }}">Pel.</a>
             </div>
         </li>
 

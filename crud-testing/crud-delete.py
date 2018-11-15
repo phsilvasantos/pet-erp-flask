@@ -9,6 +9,7 @@ Peludos.query.delete()
 Contatos.query.delete()
 Enderecos.query.delete()
 Vendas.query.delete()
+Pagamentos.query.delete()
 db.session.commit()
 # db.session.rollback()
 

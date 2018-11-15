@@ -16,12 +16,17 @@ views_pagamentos = Blueprint('views_pagamentos', __name__)
 #                    )
 
 
-@views_pagamentos.route('/pagamento', methods=['GET', 'POST'])
-def pagamentos():
+@views_pagamentos.route('/pagamentos/<int:id>', methods=['GET', 'POST'])
+def pagamentos(id):
     """Cadastra pagamentos."""
-    venda = request.args.get('venda', None)
-    venda = Vendas.query.filter_by(id=venda).first()
+    if id:
+        venda = Vendas.query.filter_by(id=id).first()
+    else:
+        venda = request.args.get('id', None)
+        venda = Vendas.query.filter_by(id=id).first()
+
     descricao = venda.descricao
+    saldo = venda.calcula_saldo()
     form = Form_pagamentos()
 
     if form.validate_on_submit():
@@ -40,11 +45,12 @@ def pagamentos():
 
         # db.session.add(venda_bt)
         venda.pagamentos.append(pagamento)
+        venda.saldo = venda.calcula_saldo()
         db.session.commit()
 
         return redirect(url_for('views_consultas.index'))
 
     return render_template(
                             'pagamentos.html',
-                            form=form, venda=venda, descricao=descricao
+                            form=form, venda=venda, descricao=descricao, saldo=saldo
                             )
