@@ -43,10 +43,12 @@
             Vendas
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', tipo = 'bt') }}">BT</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">BT</a>
                 <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Hosp</a>
                 <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Cur</a>
                 <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Prod</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', id=0, tipo = 'vendas') }}">Últimas</a>
             </div>
         </li>
 
@@ -55,6 +57,11 @@
             Clientes
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+
+                <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', id=0, tipo = 'clientes') }}">Pessoas</a>
+                <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', id=0, tipo = 'peludos') }}">Peludos</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('views_cadastros.cadastro_clientes') }}">Pessoas</a>
                 <a class="dropdown-item" href="{{ url_for('views_cadastros.cadastro_peludos') }}">Pel.</a>
             </div>

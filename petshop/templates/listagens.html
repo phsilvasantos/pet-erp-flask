@@ -2,20 +2,12 @@
 {% block content %}
 
 
-
-<div class="container">
-    <h1 class="display-4">ERP</h1>
-    <p class="lead">Cadastro de clientes e registro de vendas</p>
-</div>
-
 <div class="jumbotron">
 
-<h3 class="display-5">Welcome! - listagens</h3>
+<h3 class="display-5">{{ heading }}</h3>
+
 <hr>
 {% if listagem %}
-
-    <h3 class="display-5">{{ heading }}</h3>
-
 
     <table class="table table-hover">
     <thead>
@@ -30,23 +22,62 @@
 
         <td>
         {{ item }}
-        <a href="{{ url_for('views_pagamentos.pagamentos', id=item.id) }}">Adicionar $</a> |
+
         <a href="{{ url_for('views_vendas.modifica_venda', id=item.id) }}">Modificar</a>
+
+        {% if tipo == 'vendas'%}
+
+            |
+            <a href="{{ url_for('views_consultas.listagens',
+                                tipo='pagamentos', 
+                                id=item.id)
+                    }}">Ver $$$</a>
+
+            {% if item.saldo and item.saldo > 0  %}
+            |
+            <a href="{{ url_for('views_pagamentos.pagamentos', id=item.id) }}">Adicionar $$$</a>
+            {% endif %}
+
+        {% endif %}
+
         </td>
-
-
-
-
       </tr>
 
     {% endfor %}
+
     </tbody>
     </table>
 
+    <hr>
 
-<a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Nova venda BT</a>
+    {% if tipo == 'vendas' %}
+        <h4>Cadastrar novas vendas de:</h4>
+
+        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
+            Banho & Tosa</a>
+        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
+            Hospedagem</a>
+        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
+            Cursos</a>
+        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
+            Produtos</a>
+
+    {% endif %}
+
+
+    {% if tipo == 'clientes' %}
+        <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_clientes') }}">
+            Cadastrar novo cliente </a>
+    {% endif %}
+
+    {% if tipo == 'peludos' %}
+        <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos') }}">
+            Cadastrar novo peludo </a>
+    {% endif %}
 
 {% endif %}
+
+
 
 
 

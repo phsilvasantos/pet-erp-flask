@@ -2,15 +2,24 @@
 
 ## todo
 
+
+
+2018-11-17
+- listagem after cadastro cliente - ok
+- listagem after cadastro peludos - ok
+- botão para incluir novas vendas - ok
+- relação de pagamentos para alterar - ok
+- venda bt para 2 cachorros
+- unificar listagens - halfway
+- modificar vendas - todo
+- modificar registros - todo
 - api
-- relatório vendas shows after cadastro_vendas
+
 
 2018-11-15
 - adicionar pagamentos - ok
 - lista somente se saldo for > 0 - ok
-- unificar listagens - halfway
-- modificar vendas - todo
-- modificar registros - todo
+
 
 
 ## structure

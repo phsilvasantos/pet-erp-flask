@@ -1,7 +1,7 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
 from petshop.modelos.forms import Form_clientes, Form_peludos
-from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos, Vendas
+from petshop.modelos.models import Clientes, Peludos, Vendas, Pagamentos
 from sqlalchemy import desc
 
 views_consultas = Blueprint('views_consultas', __name__)
@@ -14,19 +14,40 @@ def index():
 
     if listagem:
         heading = 'Alerta: vendas em aberto'
-        return render_template('listagens.html', listagem=listagem, heading=heading)
+        tipo = 'vendas'
+        return render_template('listagens.html', listagem=listagem, heading=heading, tipo=tipo)
 
     return render_template('index.html')
 
 
-@views_consultas.route('/listagem/<tipo>')
-def listagens(tipo='bt'):
-    """Listagem de qqer bosta."""
-    if tipo == 'bt':
+@views_consultas.route('/listagem/<tipo>/<int:id>', methods=['GET', 'POST'])
+# @views_consultas.route('/listagem/<tipo>', methods=['GET', 'POST'])
+def listagens(tipo, id):
+    """Listagem de qqer coisa."""
+    if tipo == 'vendas':
         listagem = Vendas.query.order_by(desc(Vendas.data_venda)).all()
-        heading = 'Últimas vendas de BT'
-        return render_template('listagens.html', listagem=listagem, heading=heading)
+        heading = 'Últimas vendas'
+        return render_template('listagens.html', listagem=listagem, heading=heading, tipo=tipo)
+
+    if tipo == 'clientes':
+        listagem = Clientes.query.order_by(Clientes.nome).all()
+        heading = 'Relação de clientes'
+        return render_template('listagens.html', listagem=listagem, heading=heading, tipo=tipo)
+
+    if tipo == 'peludos':
+        listagem = Peludos.query.order_by(Peludos.nome).all()
+        listagem
+        heading = 'Relação de peludos'
+        return render_template('listagens.html', listagem=listagem, heading=heading, tipo=tipo)
+
+    if tipo == 'pagamentos':
+        venda = Vendas.query.get_or_404(id)
+        data = venda.data_venda.strftime('%d-%m-%Y')
+        heading = f'Relação de pagamentos para {venda.descricao}, em {data}'
+        listagem = Pagamentos.query.filter(Pagamentos.venda_id == venda.id).all()
+        return render_template('listagens.html', listagem=listagem, heading=heading, tipo=tipo)
+
 
     listagem = Vendas.query.order_by(desc(Vendas.data_venda)).all()
     heading = 'Últimas vendas'
-    return render_template('listagens.html', listagem=listagem, heading=heading)
+    return render_template('listagens.html', listagem=listagem, heading=heading, tipo=tipo)

@@ -26,9 +26,9 @@ def modifica_venda(id):
 @views_vendas.route('/vendas_bt', methods=['GET', 'POST'])
 def vendas_bt(id=None):
     """Cadastra vendas."""
-    if(id):
-        venda = Vendas.query.get_or_404(id)
-        return venda
+    # if(id):
+    #     venda = Vendas.query.get_or_404(id)
+    #     return venda
 
     # se o cliente já foi escolhido,
     # listar os caes e apresentar o form de vendas
@@ -42,7 +42,6 @@ def vendas_bt(id=None):
         form.peludos.choices = lista_peludos
         nome_cliente = Clientes.query.filter_by(id=cliente).first().nome
         if form.validate_on_submit():
-            # peludos = form.peludos.data
             # atribuir ao db
             data_pbanho = form.data_pbanho.data
             data_venda = form.data_venda.data
