@@ -9,11 +9,19 @@
 - listagem after cadastro peludos - ok
 - botão para incluir novas vendas - ok
 - relação de pagamentos para alterar - ok
-- venda bt para 2 cachorros
-- unificar listagens - halfway
+- venda bt para 2 cachorros - ok
+- unificar listagens - ok
 - modificar vendas - todo
 - modificar registros - todo
 - api
+- outros tipos de venda
+- paginador para listagens - ok
+- wtf componentes or fields?
+- pagamentos valor 0
+- listagem de vendas sem pagamentos / sem saldo - ok
+- adicionar botao sem pagamento agora (pagar depois) - ok
+- verificar vendas sem pagamento demorando pra aparecer
+- validacao nos campos
 
 
 2018-11-15

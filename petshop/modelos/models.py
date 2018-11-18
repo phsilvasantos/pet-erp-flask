@@ -1,7 +1,6 @@
 from petshop import db
 import datetime as dt
 import numpy as np
-import decimal
 
 class Clientes(db.Model):
     """O dono do peludo."""
@@ -11,8 +10,9 @@ class Clientes(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    nome = db.Column(db.NVARCHAR(30), nullable=False)
-    sexo = db.Column(db.Enum('M', 'H'), nullable=False)
+    nome = db.Column(db.String(30), nullable=False)
+    # sexo = db.Column(db.Enum('M', 'H'), nullable=False)
+    sexo = db.Column(db.String(1), nullable=False)
 
     peludo = db.relationship('Peludos', backref='clientes', lazy=True)
     venda = db.relationship('Vendas', backref='clientes', lazy=True)
@@ -24,7 +24,7 @@ class Clientes(db.Model):
         caes_cliente = self.peludo
         caes_cliente = [i.nome for i in caes_cliente]
         if caes_cliente:
-            texto = ' e '.join(caes_cliente)
+            texto = ' | '.join(caes_cliente)
             return f'dono de {texto}'
         return 'sem peludos ainda'
 
@@ -37,8 +37,16 @@ class Clientes(db.Model):
         """Representação."""
         return f"""
         {self.nome}, da {self.endereco[0]} - tel {self.contato[0]}
-        {self.lista_peludos()}
+        - {self.lista_peludos()}
         """
+
+
+association_table = db.Table('association',
+                             db.Column('peludos_id', db.Integer,
+                                       db.ForeignKey('peludos.id')),
+                             db.Column('vendas_id', db.Integer,
+                                       db.ForeignKey('vendas.id'))
+                             )
 
 
 class Peludos(db.Model):
@@ -47,16 +55,21 @@ class Peludos(db.Model):
     __tablename__ = 'peludos'
 
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.NVARCHAR(30), nullable=False)
-    breed = db.Column(db.NVARCHAR(20), nullable=False)
-    pelagem = db.Column(db.Enum('longo', 'curto'), nullable=False)
+    nome = db.Column(db.String(30), nullable=False)
+    breed = db.Column(db.String(20), nullable=False)
+    # pelagem = db.Column(db.Enum('longo', 'curto'), nullable=False)
+    pelagem = db.Column(db.String(6), nullable=False)
     nascimento = db.Column(db.Date, nullable=True)
     data_start = db.Column(db.Date, nullable=True)
-    sexo = db.Column(db.Enum('M', 'F'), nullable=False)
-    castrado = db.Column(db.Enum('S', 'N'), nullable=False)
+    # sexo = db.Column(db.Enum('M', 'F'), nullable=False)
+    sexo = db.Column(db.String(1), nullable=False)
+    # castrado = db.Column(db.Enum('S', 'N'), nullable=False)
+    castrado = db.Column(db.String(1), nullable=False)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
 
-    venda = db.relationship('Vendas', backref='peludos', lazy=True)
+    # venda = db.relationship('Vendas', backref='peludos', lazy=True)
+    vendas_on_peludo = db.relationship('Vendas', secondary=association_table,
+                            back_populates="peludos_on_venda")
 
     def get_idade(self):
         """Calcula a idade."""
@@ -80,8 +93,8 @@ class Peludos(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        {self.nome}, um {self.breed} de pelo {self.pelagem} com {self.get_idade()} anos
-        cliente: {Clientes.query.get(self.cliente_id).nome}
+        {self.nome}, um {self.breed} de pelo {self.pelagem} com {self.get_idade()} anos.
+        Cliente: {Clientes.query.get(self.cliente_id).nome}
         """
 
 
@@ -91,10 +104,10 @@ class Enderecos(db.Model):
     __tablename__ = 'enderecos'
 
     id = db.Column(db.Integer, primary_key=True)
-    rua = db.Column(db.NVARCHAR(30))
+    rua = db.Column(db.String(30))
     numero = db.Column(db.Integer)
-    bairro = db.Column(db.NVARCHAR(30))
-    cidade = db.Column(db.NVARCHAR(30))
+    bairro = db.Column(db.String(30))
+    cidade = db.Column(db.String(30))
     estado = db.Column(db.CHAR(2))
     distancia = db.Column(db.Float)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
@@ -120,9 +133,9 @@ class Contatos(db.Model):
     __tablename__ = 'contatos'
 
     id = db.Column(db.Integer, primary_key=True)
-    tel1 = db.Column(db.NVARCHAR(13))
-    tel2 = db.Column(db.NVARCHAR(13))
-    email = db.Column(db.NVARCHAR(30))
+    tel1 = db.Column(db.String(13))
+    tel2 = db.Column(db.String(13))
+    email = db.Column(db.String(30))
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='contato')
 
@@ -151,21 +164,25 @@ class Vendas(db.Model):
 
     # comum
     id = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.NVARCHAR(10), nullable=False)
+    tipo = db.Column(db.String(10), nullable=False)
     descricao = db.Column(db.Text, nullable=False)
     data_venda = db.Column(db.Date, nullable=False)
     valor_servicos = db.Column(db.Float, nullable=True)
     valor_taxi = db.Column(db.Float, nullable=True)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
-    peludo_id = db.Column(db.Integer, db.ForeignKey('peludos.id'))
+    peludos_on_venda = db.relationship(
+        "Peludos",
+        secondary=association_table,
+        back_populates="vendas_on_peludo")
     saldo = db.Column(db.Float, nullable=True)
     pagamentos = db.relationship('Pagamentos')
 
     # banho e tosa
     data_pbanho = db.Column(db.Date, nullable=True)
     n_banhos = db.Column(db.Integer, nullable=True)
-    tipo_banho = db.Column(db.Enum('pacote', 'avulso', 'cortesia'), nullable=True)
-    pacote = db.Column(db.NVARCHAR(10), nullable=True)
+    # tipo_banho = db.Column(db.Enum('pacote', 'avulso', 'cortesia'), nullable=True)
+    tipo_banho = db.Column(db.String(15), nullable=True)
+    pacote = db.Column(db.String(10), nullable=True)
 
     # hospedagem
     data_entrada = db.Column(db.Date, nullable=True)
@@ -183,7 +200,6 @@ class Vendas(db.Model):
         if pagamentos:
             valores_pagos = [item.valor for item in pagamentos]
             valores_pagos = np.array(valores_pagos)
-            # saldo = decimal.Decimal(float(valor_total)) - decimal.Decimal(float(valores_pagos.sum()))
             saldo = round(valor_total - valores_pagos.sum(), 2)
             return saldo
 
@@ -247,7 +263,8 @@ class Pagamentos(db.Model):
     # tipo_venda = db.Column(
     #     db.Enum('banhos', 'hospedagens', 'cursos', 'produtos', 'outros'), nullable=False)
     forma_pagto = db.Column(
-        db.Enum('cash', 'debito', 'credito', 'cheque', 'pendente'), nullable=False)
+        # db.Enum('cash', 'debito', 'credito', 'cheque', 'pendente'), nullable=False)
+        db.String(15), nullable=False)
     # # data_pagto = db.Column(db.Date, nullable=False)
     # valor_entrada = db.Column(db.Numeric, nullable=False)
     venda_id = db.Column(db.Integer, db.ForeignKey('vendas.id'))
@@ -265,5 +282,5 @@ class Pagamentos(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        Pagamento em {self.data} no valor de {self.valor}
+        Pagamento em {self.data}, por {self.forma_pagto}, no valor de {self.valor}
         """

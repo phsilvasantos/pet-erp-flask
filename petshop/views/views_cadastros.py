@@ -36,7 +36,7 @@ def cadastro_clientes():
         db.session.add(n_cliente)
         db.session.commit()
 
-        return redirect(url_for('views_consultas.listagens', tipo='clientes'))
+        return redirect(url_for('views_consultas.listagens', id=0, tipo='clientes'))
     return render_template('cadastro_clientes.html', form=form)
 
 
@@ -69,6 +69,6 @@ def cadastro_peludos():
         n_cliente.peludo.append(n_peludo)
         db.session.commit()
 
-        return redirect(url_for('views_consultas.listagens', tipo='peludos'))
+        return redirect(url_for('views_consultas.listagens', id=0, tipo='peludos'))
 
     return render_template('cadastro_peludos.html', form=form)

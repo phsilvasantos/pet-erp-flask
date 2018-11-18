@@ -17,14 +17,20 @@ venda_bt = Vendas(
     )
 
 cliente = Clientes.query.filter_by(nome='Marcelo').first()
-cliente
+cliente.id
 
-cao = Peludos.query.filter_by(nome='Leon').first()
-cao
+peludos = Peludos.query.filter_by(cliente_id=2).all()
+peludos
+
+peludos = Peludos.query.filter(Peludos.id.in_([1,2])).all()
+peludos
+
+
+for item in peludos:
+    item.vendas_on_peludo.append(venda_bt)
 
 
 cliente.venda.append(venda_bt)
-cao.venda.append(venda_bt)
 
 db.session.commit()
 # db.session.rollback()
@@ -32,17 +38,25 @@ db.session.commit()
 ##
 Vendas.query.all()
 
-########
+# cachorros na venda
+
+venda = Vendas.query.first()
+venda = Vendas.query.filter(Vendas.valor_servicos == 666).first()
+venda
+venda.peludos_on_venda
+
+# pagamentos ########
+
 pagamento = Pagamentos(data = datetime(2018, 11, 15), valor = 222,
                         forma_pagto = 'credito', valor_entrada = 222)
 
 
-venda = Vendas.query.get(3)
+# venda = Vendas.query.get(3)
 venda
-venda.saldo
 venda.pagamentos.append(pagamento)
 
 venda.saldo = venda.calcula_saldo()
+venda.saldo
 
 db.session.commit()
 
@@ -54,7 +68,7 @@ pagamento = Pagamentos(data = datetime(2018, 11, 3), valor = 55,
                         forma_pagto = 'credito', valor_entrada = 53)
 
 
-venda = Vendas.query.first()
+# venda = Vendas.query.first()
 venda
 venda.pagamentos.append(pagamento)
 db.session.commit()
@@ -83,7 +97,6 @@ venda = Vendas.query.first()
 venda
 
 venda.pagamentos
-venda.saldo()
 
 
 

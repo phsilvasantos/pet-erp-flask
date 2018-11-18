@@ -97,6 +97,43 @@ cliente_info.endereco.append(endereco_info)
 db.session.add(cliente_info)
 db.session.commit()
 
+# capeta ##########
+
+cao_info = Peludos(
+                    'belzebull', 'bull-terrier', 'longo',
+                    datetime(1900, 1, 1),
+                    datetime(2018, 10, 1), 'M', 'S'
+                    )
+
+
+cao_info2 = Peludos(
+                    'baal', 'unk', 'curto',
+                    datetime(1100, 2, 1),
+                    datetime(2018, 10, 2), 'F', 'S'
+                    )
+
+cao_info3 = Peludos(
+                    'lucy', 'unk', 'curto',
+                    datetime(1100, 2, 1),
+                    datetime(2018, 10, 2), 'F', 'S'
+                    )
+
+
+cao_info4 = Peludos(
+                    'capiroto', 'unk', 'curto',
+                    datetime(1100, 2, 1),
+                    datetime(2018, 10, 2), 'M', 'N'
+                    )
+
+
+cliente_info = Clientes.query.filter_by(nome='capeta').first()
+cliente_info
+cliente_info.peludo.extend([cao_info, cao_info2, cao_info3, cao_info4])
+
+db.session.add(cliente_info)
+db.session.commit()
+
+
 
 # mostra o nome do dono e do peludo
 query = (

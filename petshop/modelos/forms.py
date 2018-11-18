@@ -2,12 +2,17 @@ import babel
 from flask_wtf import FlaskForm
 from datetime import datetime
 from wtforms_components import (
-                    StringField, SelectField, IntegerField,
-                    DecimalField, DateField,
-                    SelectMultipleField, DateRange
+                    # StringField, SelectField, IntegerField,
+                    DateField,
+                    # SelectMultipleField, DateRange
                     )
-from wtforms.fields import SubmitField, FloatField
-from wtforms.validators import DataRequired, Email
+from wtforms.fields import (SubmitField,
+                            StringField, SelectField, IntegerField,
+                            FloatField,
+                            SelectMultipleField
+                            )
+
+from wtforms.validators import DataRequired, Email, Regexp
 
 
 class Form_clientes(FlaskForm):
@@ -29,7 +34,7 @@ class Form_clientes(FlaskForm):
     cidade = StringField('Cidade', default='Santo André',
                          validators=[DataRequired()])
     estado = StringField('Estado', default='SP', validators=[DataRequired()])
-    distancia = DecimalField('Distância', default=5,
+    distancia = FloatField('Distância', default=5,
                              validators=[DataRequired()])
 
     submit = SubmitField('Adiciona cliente')
@@ -83,11 +88,11 @@ class Form_vendas_bt(FlaskForm):
     data_venda = DateField('Data da venda', default=datetime.today(),
                            validators=[DataRequired()])
 
-    valor_servicos = DecimalField('Valor de serviços',
+    valor_servicos = FloatField('Valor de serviços',
                                   validators=[DataRequired()]
                                   )
 
-    valor_taxi = DecimalField('Valor do taxi dog', default=0,
+    valor_taxi = FloatField('Valor do taxi dog', default=0,
                               # validators=[DataRequired()]
                               )
 
@@ -127,11 +132,11 @@ class Form_vendas_hosp(FlaskForm):
                            validators=[DataRequired()]
                            )
 
-    valor_servicos = DecimalField('Valor de serviços adicionais',
+    valor_servicos = FloatField('Valor de serviços adicionais',
                                   validators=[DataRequired()]
                                   )
 
-    valor_taxi = DecimalField('Valor do taxi dog', default=0,
+    valor_taxi = FloatField('Valor do taxi dog', default=0,
                               validators=[DataRequired()]
                               )
 
@@ -151,7 +156,7 @@ class Form_vendas_hosp(FlaskForm):
                            validators=[DataRequired()]
                            )
 
-    valor_diarias = DecimalField('Valor total de diárias', default=0,
+    valor_diarias = FloatField('Valor total de diárias', default=0,
                                  validators=[DataRequired()]
                                  )
 
@@ -167,7 +172,7 @@ class Form_vendas_cursos(FlaskForm):
     data_venda = DateField('Data da venda', default=datetime.today(),
                            validators=[DataRequired()])
 
-    valor_servicos = DecimalField('Valor de serviços',
+    valor_servicos = FloatField('Valor de serviços',
                                   validators=[DataRequired()])
 
     data_entrada = DateField('Data de início do curso',
@@ -180,7 +185,7 @@ class Form_vendas_cursos(FlaskForm):
                            validators=[DataRequired()]
                            )
 
-    custo_prod = DecimalField('Custos do curso', default=0,
+    custo_prod = FloatField('Custos do curso', default=0,
                               validators=[DataRequired()]
                               )
 
@@ -195,11 +200,11 @@ class Form_vendas_prod(FlaskForm):
     data_venda = DateField('Data da venda', default=datetime.today(),
                            validators=[DataRequired()])
 
-    valor_prod = DecimalField('Valor dos produtos', default=0,
+    valor_prod = FloatField('Valor dos produtos', default=0,
                               validators=[DataRequired()]
                               )
 
-    custo_prod = DecimalField('Custo dos produtos', default=0,
+    custo_prod = FloatField('Custo dos produtos', default=0,
                               validators=[DataRequired()]
                               )
 

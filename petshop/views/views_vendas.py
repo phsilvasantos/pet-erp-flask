@@ -14,6 +14,8 @@ views_vendas = Blueprint('views_vendas', __name__)
 #                             ('prod', 'Produtos')
 #                             ]
 #                    )
+
+
 @views_vendas.route('/<int:id>', methods=['GET', 'POST'])
 def modifica_venda(id):
     """Cadastra vendas."""
@@ -26,10 +28,6 @@ def modifica_venda(id):
 @views_vendas.route('/vendas_bt', methods=['GET', 'POST'])
 def vendas_bt(id=None):
     """Cadastra vendas."""
-    # if(id):
-    #     venda = Vendas.query.get_or_404(id)
-    #     return venda
-
     # se o cliente já foi escolhido,
     # listar os caes e apresentar o form de vendas
     cliente = request.args.get('cliente', None)
@@ -68,10 +66,12 @@ def vendas_bt(id=None):
                 )
 
             cliente = Clientes.query.get(cliente_id)
-            cao = Peludos.query.get(peludo_id)
-
             cliente.venda.append(venda_bt)
-            cao.venda.append(venda_bt)
+            # cao = Peludos.query.get(peludo_id)
+            peludos = Peludos.query.filter(Peludos.id.in_(peludo_id)).all()
+            for cao in peludos:
+                cao.vendas_on_peludo.append(venda_bt)
+            # cao.venda.append(venda_bt)
             db.session.commit()
 
             return redirect(

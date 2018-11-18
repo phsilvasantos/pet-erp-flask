@@ -7,7 +7,7 @@
 <h3 class="display-5">{{ heading }}</h3>
 
 <hr>
-{% if listagem %}
+{% if listagem.items %}
 
     <table class="table table-hover">
     <thead>
@@ -17,25 +17,36 @@
     </thead>
     <tbody>
 
-    {% for item in listagem %}
+    {% for item in listagem.items %}
       <tr>
 
         <td>
         {{ item }}
-
+        -
         <a href="{{ url_for('views_vendas.modifica_venda', id=item.id) }}">Modificar</a>
 
-        {% if tipo == 'vendas'%}
+        {% if tipo == 'vendas' %}
 
-            |
-            <a href="{{ url_for('views_consultas.listagens',
-                                tipo='pagamentos', 
-                                id=item.id)
-                    }}">Ver $$$</a>
+            {% if item.saldo == 0 %}
+                |
+                <a href="{{ url_for('views_consultas.listagens',
+                                    tipo='pagamentos',
+                                    id=item.id)
+                        }}">Ver $$$</a>
 
-            {% if item.saldo and item.saldo > 0  %}
-            |
-            <a href="{{ url_for('views_pagamentos.pagamentos', id=item.id) }}">Adicionar $$$</a>
+            {% else %}
+                |
+                <a href="{{ url_for('views_pagamentos.pagamentos',
+                                    id=item.id)
+                        }}">Adicionar $$$</a>
+                {% if item.pagamentos %}
+                    |
+                    <a href="{{ url_for('views_consultas.listagens',
+                                        tipo='pagamentos',
+                                        id=item.id)
+                                }}">Ver $$$</a>
+                {% endif %}
+                        
             {% endif %}
 
         {% endif %}
@@ -75,13 +86,30 @@
             Cadastrar novo peludo </a>
     {% endif %}
 
+
+    {% if listagem.pages > 1 %}
+        <nav aria-label="Page navigation ">
+            <ul class="pagination justify-content-end">
+            {% for page_num in listagem.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if listagem.page == page_num %}
+                    <li class="page-item active">
+                    <span class="page-link">{{ page_num }}
+                        <span class="sr-only">(current)</span>
+                    </span>
+                    </li>
+
+                {% else %}
+                    <li class="page-item">
+                    <a class="page-link"
+                    href="{{ url_for('views_consultas.listagens', page=page_num, id=0, tipo = tipo) }}">{{ page_num }}
+                    </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </nav>
+    {% endif %}
+
 {% endif %}
-
-
-
-
-
-
-
 </div>
 {% endblock %}
