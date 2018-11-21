@@ -2,6 +2,30 @@
 
 ## todo
 
+2018-11-21
+- outros tipos de venda - ok
+- modificar vendas - todo
+- modificar registros - todo
+- opção de incluir pagamentos, qdo listando pagamentos - halfway
+- api
+- pagamentos valor 0
+- validacao nos campos
+
+
+
+
+2018-11-19
+- outros tipos de venda
+- consertar paginador... - ok
+- modificar vendas - todo
+- modificar registros - todo
+- api
+- wtf componentes or fields? - ok
+- pagamentos valor 0
+- verificar vendas sem pagamento demorando pra aparecer - ok
+- validacao nos campos
+
+
 
 
 2018-11-17

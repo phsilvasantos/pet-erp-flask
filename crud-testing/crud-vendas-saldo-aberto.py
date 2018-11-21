@@ -3,10 +3,28 @@ from petshop import db
 from petshop.modelos.models import Clientes, Peludos, Vendas, Pagamentos
 from datetime import datetime
 import pandas as pd
+from sqlalchemy import or_, and_
 
 Vendas.query.all()
-venda = Vendas.query.first()
-venda.saldo()
+
+len(Vendas.query.all())
+
+vendas = Vendas.query.filter(Vendas.tipo=='hosp').all()
+vendas
+
+listagem = (Vendas
+            .query.filter(
+                        and_(
+                            or_(Vendas.saldo > 0, Vendas.saldo == None ),
+                            Vendas.tipo == 'hosp'
+                            )
+                        ).all()
+            )
+listagem
+
+
+
+
 ########
 venda_comsaldo = Vendas.query.filter(Vendas.saldo != 0).all()
 venda_comsaldo

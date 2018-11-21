@@ -192,16 +192,25 @@ class Vendas(db.Model):
     # produtos
     valor_prod = db.Column(db.Float, nullable=True)
     custo_prod = db.Column(db.Float, nullable=True)
+    quantidade = db.Column(db.Integer, nullable=True)
 
-    def calcula_saldo(self):
+    def calcula_saldo(self, tipo='saldo'):
         """Calcula o saldo desta venda."""
-        valor_total = self.valor_servicos + self.valor_taxi
-        pagamentos = self.pagamentos
-        if pagamentos:
-            valores_pagos = [item.valor for item in pagamentos]
-            valores_pagos = np.array(valores_pagos)
-            saldo = round(valor_total - valores_pagos.sum(), 2)
-            return saldo
+        valor_total = (
+                    (self.valor_servicos or 0)
+                    + (self.valor_taxi or 0)
+                    + (self.valor_diarias or 0)
+                    + (self.valor_prod or 0)
+                    )
+
+        if tipo != 'total':
+            if self.pagamentos:
+                valores_pagos = [item.valor for item in self.pagamentos]
+                valores_pagos = np.array(valores_pagos)
+                saldo = round(valor_total - valores_pagos.sum(), 2)
+                return saldo
+            else:
+                return valor_total
 
         return valor_total
 
@@ -242,7 +251,7 @@ class Vendas(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        {self.descricao}, em {self.data_venda} no valor de {self.valor_servicos}
+        {self.descricao}, em {self.data_venda} no valor de {self.calcula_saldo(tipo='total')}
         para {Clientes.query.get(self.cliente_id).nome} - saldo: R${self.calcula_saldo()}
         """
 

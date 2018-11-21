@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+<h3>Nova venda</h3>
+
+<h2 class="display-3">{{ tipo_dic }}</h2>
+
+{% if cliente %}
+<div class='cliente'>
+    {% if tipo == 'bt' %}
+        <div class="bt">
+
+        <div class="jumbotron">
+        <h3>Digite os dados de banho&tosa para {{ nome_cliente }}</h3>
+
+        <hr>
+
+        <div class="container">
+        <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.data_venda.label }}
+            {{ form.data_venda(class_="form-control input-group date") }}
+            </div>
+
+            <div class="form-group col-md-3">
+            {{ form.data_pbanho.label }}
+            {{ form.data_pbanho(class_="form-control input-group date") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.valor_taxi.label }}
+            {{ form.valor_taxi(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.valor_servicos.label }}
+            {{ form.valor_servicos(class_="form-control") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+            <div class="form-group col-md-9">
+            {{ form.descricao.label }}
+            {{ form.descricao(class_="form-control") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-3">
+            {{ form.tipo_banho.label }}
+            {{ form.tipo_banho(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-3">
+
+            {{ form.pacote.label }}
+            {{ form.pacote(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-3">
+            {{ form.n_banhos.label }}
+            {{ form.n_banhos(class_="form-control") }}
+            </div>
+
+        </div>
+
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.peludos.label }}
+            {{ form.peludos(class_="form-control") }}
+            </div>
+
+            {{ form.submit(class_="btn btn-primary btn-lg") }}
+        </div>
+
+        </form>
+        </div>
+
+        </div>
+        </div>
+
+    {% elif tipo == 'hosp' %}
+        <div class="hosp">
+
+        <div class="jumbotron">
+        <h3>Digite os dados de hospedagem para {{ nome_cliente }}</h3>
+
+        <hr>
+
+        <div class="container">
+        <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.data_venda.label }}
+            {{ form.data_venda(class_="form-control input-group date") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.data_entrada.label }}
+            {{ form.data_entrada(class_="form-control input-group date") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.data_saida.label }}
+            {{ form.data_saida(class_="form-control input-group date") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-9">
+            {{ form.descricao.label }}
+            {{ form.descricao(class_="form-control") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.n_banhos.label }}
+            {{ form.n_banhos(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.valor_diarias.label }}
+            {{ form.valor_diarias(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.valor_servicos.label }}
+            {{ form.valor_servicos(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.valor_taxi.label }}
+            {{ form.valor_taxi(class_="form-control") }}
+            </div>
+
+        </div>
+
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.peludos.label }}
+            {{ form.peludos(class_="form-control") }}
+            </div>
+
+            {{ form.submit(class_="btn btn-primary btn-lg") }}
+        </div>
+
+        </form>
+        </div>
+
+        </div>
+        </div>
+
+
+    {% elif tipo == 'cursos' %}
+        <div class="cursos">
+
+        <div class="jumbotron">
+        <h3>Digite os dados do curso para {{ nome_cliente }}</h3>
+
+        <hr>
+
+        <div class="container">
+        <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.data_venda.label }}
+            {{ form.data_venda(class_="form-control input-group date") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.data_entrada.label }}
+            {{ form.data_entrada(class_="form-control input-group date") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.data_saida.label }}
+            {{ form.data_saida(class_="form-control input-group date") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-9">
+            {{ form.descricao.label }}
+            {{ form.descricao(class_="form-control") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.custo_prod.label }}
+            {{ form.custo_prod(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.valor_servicos.label }}
+            {{ form.valor_servicos(class_="form-control") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+            {{ form.submit(class_="btn btn-primary btn-lg") }}
+        </div>
+
+        </form>
+        </div>
+
+        </div>
+        </div>
+
+    {% elif tipo == 'produtos' %}
+        <div class="produtos">
+
+        <div class="jumbotron">
+        <h3>Digite os dados do produto para {{ nome_cliente }}</h3>
+
+        <hr>
+
+        <div class="container">
+        <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-2">
+            {{ form.data_venda.label }}
+            {{ form.data_venda(class_="form-control input-group date") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.custo_prod.label }}
+            {{ form.custo_prod(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.quantidade.label }}
+            {{ form.quantidade(class_="form-control") }}
+            </div>
+
+            <div class="form-group col-md-2">
+            {{ form.valor_prod.label }}
+            {{ form.valor_prod(class_="form-control") }}
+            </div>
+
+        </div>
+
+        <div class="row align-items-center">
+
+            <div class="form-group col-md-8">
+            {{ form.descricao.label }}
+            {{ form.descricao(class_="form-control") }}
+            </div>
+
+        </div>
+
+
+        <div class="row align-items-center">
+            {{ form.submit(class_="btn btn-primary btn-lg") }}
+        </div>
+
+        </form>
+        </div>
+
+        </div>
+        </div>
+    {% endif %}
+</div>
+{% else %}
+
+    <div class="jumbotron">
+    <h3>Escolha o cliente:</h3>
+
+    <form method="POST">
+       {{ form.hidden_tag() }}
+
+       <div class="form-row">
+           <div class="form-group col-md-3">
+           {{ form.cliente.label }}
+           {{ form.cliente(class_="form-control") }}
+           </div>
+
+           {{ form.submit(class_="btn btn-primary btn-lg") }}
+
+        </div>
+    </form>
+    </div>
+
+    {% endif %}
+
+{% endblock %}

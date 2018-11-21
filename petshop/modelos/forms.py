@@ -104,7 +104,7 @@ class Form_vendas_bt(FlaskForm):
                             validators=[DataRequired()]
                             )
 
-    n_banhos = IntegerField('Quantidade de banhos', default=1,
+    n_banhos = IntegerField('Qtde. banhos', default=1,
                             validators=[DataRequired()]
                             )
 
@@ -132,31 +132,31 @@ class Form_vendas_hosp(FlaskForm):
                            validators=[DataRequired()]
                            )
 
-    valor_servicos = FloatField('Valor de serviços adicionais',
+    valor_servicos = FloatField('Serviços adicionais', default=0,
                                   validators=[DataRequired()]
                                   )
 
-    valor_taxi = FloatField('Valor do taxi dog', default=0,
+    valor_taxi = FloatField('Taxi dog', default=0,
                               validators=[DataRequired()]
                               )
 
     peludos = SelectMultipleField('Peludo(s)', choices=[], coerce=int)
 
-    n_banhos = IntegerField('Quantidade de banhos', default=0,
+    n_banhos = IntegerField('Qtde de banhos', default=0,
                             validators=[DataRequired()]
                             )
 
-    data_entrada = DateField('Data de entrada na hospedagem',
+    data_entrada = DateField('Data de entrada',
                              default=datetime.today(),
                              validators=[DataRequired()]
                              )
 
-    data_saida = DateField('Data de saída da hospedagem',
+    data_saida = DateField('Data de saída',
                            default=datetime.today(),
                            validators=[DataRequired()]
                            )
 
-    valor_diarias = FloatField('Valor total de diárias', default=0,
+    valor_diarias = FloatField('Vl. total diárias', default=0,
                                  validators=[DataRequired()]
                                  )
 
@@ -175,17 +175,17 @@ class Form_vendas_cursos(FlaskForm):
     valor_servicos = FloatField('Valor de serviços',
                                   validators=[DataRequired()])
 
-    data_entrada = DateField('Data de início do curso',
+    data_entrada = DateField('Data de início',
                              default=datetime.today(),
                              validators=[DataRequired()]
                              )
 
-    data_saida = DateField('Data de término do curso',
+    data_saida = DateField('Data de término',
                            default=datetime.today(),
                            validators=[DataRequired()]
                            )
 
-    custo_prod = FloatField('Custos do curso', default=0,
+    custo_prod = FloatField('Custo', default=0,
                               validators=[DataRequired()]
                               )
 
@@ -207,6 +207,10 @@ class Form_vendas_prod(FlaskForm):
     custo_prod = FloatField('Custo dos produtos', default=0,
                               validators=[DataRequired()]
                               )
+
+    quantidade = IntegerField('Qtde', default=1,
+                            validators=[DataRequired()]
+                            )
 
     submit = SubmitField('Registrar venda')
 

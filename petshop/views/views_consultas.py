@@ -13,14 +13,16 @@ def index():
     page = request.args.get('page', 1, type=int)
     # listagem = Vendas.query.filter(
     #     Vendas.saldo > 0).paginate(page=page, per_page=5)
-    listagem = (Vendas.query.filter(
-        or_(Vendas.saldo > 0, Vendas.saldo == None)
-        # ).all())
-        ).paginate(page=page, per_page=5))
+    listagem = (Vendas
+                .query
+                .filter(or_(Vendas.saldo > 0, Vendas.saldo == None))
+                .order_by(desc(Vendas.data_venda))
+                .paginate(page=page, per_page=5)
+                )
 
     if listagem:
         heading = 'Alerta: vendas em aberto'
-        tipo = 'vendas'
+        tipo = 'aberto'
         return render_template('listagens.html', listagem=listagem,
                                heading=heading, tipo=tipo)
 
@@ -32,8 +34,10 @@ def listagens(tipo, id):
     """Listagem de qqer coisa."""
     if tipo == 'vendas':
         page = request.args.get('page', 1, type=int)
-        listagem = Vendas.query.order_by(
-            desc(Vendas.data_venda)).paginate(page=page, per_page=5)
+        listagem = (Vendas.query
+                    .order_by(desc(Vendas.data_venda))
+                    .paginate(page=page, per_page=5)
+                    )
         heading = 'Últimas vendas'
         return render_template('listagens.html', listagem=listagem,
                                heading=heading, tipo=tipo)

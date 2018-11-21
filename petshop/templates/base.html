@@ -35,7 +35,7 @@
         </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('views_vendas.vendas_bt') }}">BT</a>
+        <a class="nav-link" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">BT</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -43,10 +43,10 @@
             Vendas
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">BT</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Hosp</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Cur</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas_bt') }}">Prod</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">BT</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'hosp') }}">Hosp</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'cursos') }}">Cur</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'produtos') }}">Prod</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', id=0, tipo = 'vendas') }}">Últimas</a>
             </div>
@@ -107,6 +107,9 @@
 
   {% endblock %}
 </div>
+
+
+
 
 </body>
 </html>

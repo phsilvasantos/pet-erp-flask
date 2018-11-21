@@ -7,6 +7,7 @@
 <h3 class="display-5">{{ heading }}</h3>
 
 <hr>
+<div 'tabela'>
 {% if listagem.items %}
 
     <table class="table table-hover">
@@ -25,7 +26,7 @@
         -
         <a href="{{ url_for('views_vendas.modifica_venda', id=item.id) }}">Modificar</a>
 
-        {% if tipo == 'vendas' %}
+        {% if (tipo == 'vendas') or (tipo =='aberto') %}
 
             {% if item.saldo == 0 %}
                 |
@@ -46,7 +47,7 @@
                                         id=item.id)
                                 }}">Ver $$$</a>
                 {% endif %}
-                        
+
             {% endif %}
 
         {% endif %}
@@ -59,57 +60,83 @@
     </tbody>
     </table>
 
-    <hr>
+{% endif %}
+</div>
+<hr>
 
-    {% if tipo == 'vendas' %}
-        <h4>Cadastrar novas vendas de:</h4>
+<div 'botoes'>
+{% if (tipo == 'vendas') %}
+    <h4>Cadastrar novas vendas de:</h4>
 
-        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
-            Banho & Tosa</a>
-        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
-            Hospedagem</a>
-        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
-            Cursos</a>
-        <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas_bt') }}">
-            Produtos</a>
+    <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">
+        Banho & Tosa</a>
+    <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'hosp') }}">
+        Hospedagem</a>
+    <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'cursos') }}">
+        Cursos</a>
+    <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'produtos') }}">
+        Produtos</a>
 
-    {% endif %}
+{% endif %}
 
-
-    {% if tipo == 'clientes' %}
-        <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_clientes') }}">
-            Cadastrar novo cliente </a>
-    {% endif %}
-
-    {% if tipo == 'peludos' %}
-        <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos') }}">
-            Cadastrar novo peludo </a>
-    {% endif %}
+<div class="botoes">
 
 
-    {% if listagem.pages > 1 %}
-        <nav aria-label="Page navigation ">
-            <ul class="pagination justify-content-end">
-            {% for page_num in listagem.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-                {% if listagem.page == page_num %}
-                    <li class="page-item active">
-                    <span class="page-link">{{ page_num }}
-                        <span class="sr-only">(current)</span>
-                    </span>
-                    </li>
+{% if tipo == 'clientes' %}
+    <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_clientes') }}">
+        Cadastrar novo cliente </a>
 
+{% elif tipo == 'peludos' %}
+    <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos') }}">
+        Cadastrar novo peludo </a>
+
+{% elif tipo == 'pagamentos' %}
+    <a class="btn btn-primary" href="{{ url_for('views_pagamentos.pagamentos',
+                        id=2) }}">Adicionar $$$</a>
+{% endif %}
+
+</div>
+
+<div 'paginador'>
+
+{% if listagem.pages > 1 %}
+    <nav aria-label="Page navigation ">
+        <ul class="pagination justify-content-end">
+        {% for page_num in listagem.iter_pages(
+                                left_edge=2,
+                                right_edge=2,
+                                left_current=2,
+                                right_current=5)
+        %}
+            {% if listagem.page == page_num %}
+                <li class="page-item active">
+                <span class="page-link">{{ page_num }}
+                    <span class="sr-only">(current)</span>
+                </span>
+                </li>
+
+            {% else %}
+                <li class="page-item">
+
+                {% if tipo == 'aberto' %}
+                    <a class="page-link"
+                    href="{{ url_for('views_consultas.index', page=page_num) }}">
+                    {{ page_num }}
+                    </a>
                 {% else %}
-                    <li class="page-item">
                     <a class="page-link"
                     href="{{ url_for('views_consultas.listagens', page=page_num, id=0, tipo = tipo) }}">{{ page_num }}
                     </a>
-                    </li>
                 {% endif %}
-            {% endfor %}
-            </ul>
-        </nav>
-    {% endif %}
-
+                </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </nav>
 {% endif %}
+
+
+</div>
+
 </div>
 {% endblock %}
