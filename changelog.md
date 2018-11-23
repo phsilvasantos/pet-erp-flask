@@ -2,6 +2,19 @@
 
 ## todo
 
+
+2018-11-23
+- modificar registros - todo
+- opção de incluir pagamentos, qdo listando pagamentos - ok
+- proteger contra pagamentos maiores que o saldo - ok
+- api
+- pagamentos valor 0
+- validacao nos campos
+- adicionar dados reais do excel
+- ver vendas para cada cliente - ok, mudar para views_consultas
+
+
+
 2018-11-21
 - outros tipos de venda - ok
 - modificar vendas - todo

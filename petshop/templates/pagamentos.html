@@ -3,6 +3,15 @@
 
 {% block content %}
 
+{% if ativa_protecao %}
+
+<div class="alert alert-danger alert-dismissible" role="alert">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+<span aria-hidden="true">&times;</span></button>
+ <strong>Não permitido:</strong> Pagamento acima do valor devido - favor corrigir
+</div>
+
+{% endif %}
 
 
 <h1 class="display-3">Registro de pagamentos</h1>

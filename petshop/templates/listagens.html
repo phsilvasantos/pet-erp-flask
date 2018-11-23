@@ -24,7 +24,12 @@
         <td>
         {{ item }}
         -
-        <a href="{{ url_for('views_vendas.modifica_venda', id=item.id) }}">Modificar</a>
+        {% if tipo == 'clientes' %}
+            <a href="{{ url_for('views_cadastros.cadastro_clientes',
+            operacao='ver_vendas', id=item.id) }}">Modificar</a>
+        {% else %}
+            <a href="#">Modificar - soon</a>
+        {% endif %}
 
         {% if (tipo == 'vendas') or (tipo =='aberto') %}
 
@@ -64,8 +69,8 @@
 </div>
 <hr>
 
-<div 'botoes'>
-{% if (tipo == 'vendas') %}
+<div class="botoes">
+{% if tipo == 'vendas' %}
     <h4>Cadastrar novas vendas de:</h4>
 
     <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">
@@ -77,22 +82,19 @@
     <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'produtos') }}">
         Produtos</a>
 
-{% endif %}
-
-<div class="botoes">
-
-
-{% if tipo == 'clientes' %}
-    <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_clientes') }}">
-        Cadastrar novo cliente </a>
+{% elif tipo == 'clientes' %}
+    <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_clientes',
+    operacao='cadastrar', id=0) }}">
+    Cadastrar novo cliente
+    </a>
 
 {% elif tipo == 'peludos' %}
     <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos') }}">
         Cadastrar novo peludo </a>
 
-{% elif tipo == 'pagamentos' %}
-    <a class="btn btn-primary" href="{{ url_for('views_pagamentos.pagamentos',
-                        id=2) }}">Adicionar $$$</a>
+{% elif (tipo == 'pagamentos') and (saldo > 0 ) %}
+    <a class="btn btn-primary"
+    href="{{ url_for('views_pagamentos.pagamentos', id=listagem.items[0].venda_id) }}">Adicionar $$$</a>
 {% endif %}
 
 </div>

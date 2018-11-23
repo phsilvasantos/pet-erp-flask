@@ -62,11 +62,11 @@ def listagens(tipo, id):
     if tipo == 'pagamentos':
         venda = Vendas.query.get_or_404(id)
         data = venda.data_venda.strftime('%d-%m-%Y')
-        heading = f'Relação de pagamentos para {venda.descricao}, em {data}'
+        heading = f'Relação de pagamentos para {venda.descricao}, de {data}, saldo R${venda.saldo}'
         page = request.args.get('page', 1, type=int)
         listagem = Pagamentos.query.filter(
             Pagamentos.venda_id == venda.id).paginate(page=page, per_page=5)
-        return render_template('listagens.html', listagem=listagem,
+        return render_template('listagens.html', listagem=listagem, saldo=venda.saldo,
                                heading=heading, tipo=tipo)
 
     page = request.args.get('page', 1, type=int)

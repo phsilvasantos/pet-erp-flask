@@ -6,15 +6,6 @@ from datetime import datetime
 
 views_pagamentos = Blueprint('views_pagamentos', __name__)
 
-# tipo = SelectField(u'Tipo de Venda',
-#                    choices=[
-#                             ('bt', 'Banho&Tosa'),
-#                             ('hosp', 'Hospedagem'),
-#                             ('curso', 'Cursos'),
-#                             ('prod', 'Produtos')
-#                             ]
-#                    )
-
 
 @views_pagamentos.route('/pagamentos/<int:id>', methods=['GET', 'POST'])
 def pagamentos(id):
@@ -46,6 +37,17 @@ def pagamentos(id):
         # db.session.add(venda_bt)
         venda.pagamentos.append(pagamento)
         venda.saldo = venda.calcula_saldo()
+
+        # proteção contra pagamentos maiores q o devido
+        if venda.saldo < 0:
+            db.session.rollback()
+            return render_template(
+                                    'pagamentos.html',
+                                    form=form, venda=venda, descricao=descricao,
+                                    saldo=saldo,
+                                    ativa_protecao=1
+                                    )
+
         db.session.commit()
 
         return redirect(url_for('views_consultas.index'))
