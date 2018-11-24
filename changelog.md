@@ -2,15 +2,39 @@
 
 ## todo
 
+2018-11-24
+- add api
+- launch
 
-2018-11-23
-- modificar registros - todo
+
+## mapa lista vendas
+
+- home > lista aberto > click item
+- detalhes aberto
+    - descricao
+    - modificar
+    - add $$$
+    - listar $$$ somente se já tem
+
+- listagem pagamentos > click item
+- details d_pagamentos
+
+
+
+2018-11-24
+- excluir clientes ok
+- excluir pagamentos
+- excluir vendas
+- modificar registros
+- adicionar dados reais do excel
+- api
+- listema de login e db para cada user
+- fix paginador
+- reworked layout para listagens ok
 - opção de incluir pagamentos, qdo listando pagamentos - ok
 - proteger contra pagamentos maiores que o saldo - ok
-- api
 - pagamentos valor 0
 - validacao nos campos
-- adicionar dados reais do excel
 - ver vendas para cada cliente - ok, mudar para views_consultas
 
 

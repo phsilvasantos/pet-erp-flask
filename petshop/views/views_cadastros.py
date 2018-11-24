@@ -1,54 +1,47 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
 from petshop.modelos.forms import Form_clientes, Form_peludos
-from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos, Vendas
+from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos, Vendas, Pagamentos
 
 views_cadastros = Blueprint('views_cadastros', __name__)
 
 
-@views_cadastros.route('/cadastro_clientes/<operacao>/<int:id>',
+@views_cadastros.route('/cadastro_clientes/',
                        methods=['GET', 'POST'])
-def cadastro_clientes(operacao, id):
+def cadastro_clientes():
     """Cadastra / modifica clientes."""
     # operacoes: cadastrar, modificar
-    if operacao == 'cadastrar':
-        form = Form_clientes()
+    form = Form_clientes()
 
-        if form.validate_on_submit():
-            nome = form.nome.data
-            sexo = form.sexo.data
-            tel1 = form.tel1.data
-            tel2 = form.tel2.data
-            email = form.email.data
-            rua = form.rua.data
-            numero = form.numero.data
-            bairro = form.bairro.data
-            cidade = form.cidade.data
-            estado = form.estado.data
-            distancia = form.distancia.data
+    if form.validate_on_submit():
+        nome = form.nome.data
+        sexo = form.sexo.data
+        tel1 = form.tel1.data
+        tel2 = form.tel2.data
+        email = form.email.data
+        rua = form.rua.data
+        numero = form.numero.data
+        bairro = form.bairro.data
+        cidade = form.cidade.data
+        estado = form.estado.data
+        distancia = form.distancia.data
 
-            # db part
-            n_cliente = Clientes(nome=nome, sexo=sexo)
-            n_endereco = Enderecos(rua=rua, numero=numero, bairro=bairro, cidade=cidade,
-                                   estado=estado, distancia=distancia)
+        # db part
+        n_cliente = Clientes(nome=nome, sexo=sexo)
+        n_endereco = Enderecos(rua=rua, numero=numero, bairro=bairro,
+                               cidade=cidade,
+                               estado=estado,
+                               distancia=distancia)
 
-            n_contato = Contatos(tel1=tel1, tel2=tel2, email=email)
+        n_contato = Contatos(tel1=tel1, tel2=tel2, email=email)
 
-            n_cliente.endereco.append(n_endereco)
-            n_cliente.contato.append(n_contato)
-            db.session.add(n_cliente)
-            db.session.commit()
+        n_cliente.endereco.append(n_endereco)
+        n_cliente.contato.append(n_contato)
+        db.session.add(n_cliente)
+        db.session.commit()
 
-            return redirect(url_for('views_consultas.listagens', id=0, tipo='clientes'))
-        return render_template('cadastro_clientes.html', form=form)
-
-    if operacao == 'ver_vendas':
-        page = request.args.get('page', 1, type=int)
-        listagem = Vendas.query.filter(Vendas.cliente_id == id).paginate(page=page, per_page=5)
-        tipo = 'vendas'
-        heading = 'Últimas vendas'
-        return render_template('listagens.html', listagem=listagem,
-                               heading=heading, tipo=tipo)
+        return redirect(url_for('views_consultas.listagens', id=0, tipo='clientes'))
+    return render_template('cadastro_clientes.html', form=form)
 
 
 @views_cadastros.route('/cadastro_peludos', methods=['GET', 'POST'])
@@ -83,3 +76,47 @@ def cadastro_peludos():
         return redirect(url_for('views_consultas.listagens', id=0, tipo='peludos'))
 
     return render_template('cadastro_peludos.html', form=form)
+
+
+@views_cadastros.route('/exclusao/<tipo>/<int:id>', methods=['GET', 'POST'])
+def exclusao(tipo, id):
+    """Exclui registro."""
+    if tipo == 'vendas':
+        venda = Vendas.query.get(id)
+        pagamentos = Pagamentos.query.filter(Pagamentos.venda_id == id).all()
+
+        for pagto in pagamentos:
+            db.session.delete(pagto)
+
+        db.session.delete(venda)
+        db.session.commit()
+        return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))
+
+    if tipo == 'clientes':
+        cliente = Clientes.query.get(id)
+        vendas = Vendas.query.filter(Vendas.cliente_id == id).all()
+        for venda in vendas:
+            pagamentos = Pagamentos.query.filter(Pagamentos.venda_id == venda.id).all()
+            for pagto in pagamentos:
+                db.session.delete(pagto)
+            db.session.delete(venda)
+
+        peludos = Peludos.query.filter(Peludos.cliente_id == id).all()
+        for peludo in peludos:
+            db.session.delete(peludo)
+
+        db.session.delete(cliente)
+        db.session.commit()
+        return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))
+
+    if tipo == 'peludos':
+        peludos = Peludos.query.get(id)
+        db.session.delete(peludo)
+        db.session.commit()
+        return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))
+
+    if tipo == 'pagamentos':
+        pagamento = Pagamentos.query.get(id)
+        db.session.delete(pagamento)
+        db.session.commit()
+        return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))
