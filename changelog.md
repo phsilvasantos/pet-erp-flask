@@ -3,8 +3,17 @@
 ## todo
 
 2018-11-26
+- zerar db, tirar do git hub
+- model cliente real
+- adicionar dados excel
 - add api
-- launch
+- launch aws
+- modificar registros
+- adicionar dados reais do excel
+- listema de login e db para cada user
+- fix paginador
+- pagamentos valor 0
+- validacao nos campos
 
 
 
