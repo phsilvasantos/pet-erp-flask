@@ -1,2 +1,10 @@
 modelo/
 app/__pycache__
+.mypy_cache
+.ropeproject
+__pycache__
+*.xls
+*.xlsx
+petshop/data.sqlite
+migrations/
+__pycache__/

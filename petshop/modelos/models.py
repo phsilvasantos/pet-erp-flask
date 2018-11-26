@@ -2,17 +2,19 @@ from petshop import db
 import datetime as dt
 import numpy as np
 
+
 class Clientes(db.Model):
     """O dono do peludo."""
 
-    # Create a table in the db
     __tablename__ = 'clientes'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(15), primary_key=True)
 
     nome = db.Column(db.String(30), nullable=False)
+    profissao = db.Column(db.String(30), nullable=True)
     # sexo = db.Column(db.Enum('M', 'H'), nullable=False)
     sexo = db.Column(db.String(1), nullable=False)
+    nascimento = db.Column(db.Date, nullable=True)
 
     peludo = db.relationship('Peludos', backref='clientes', lazy=True)
     venda = db.relationship('Vendas', backref='clientes', lazy=True)
@@ -69,7 +71,7 @@ class Peludos(db.Model):
 
     # venda = db.relationship('Vendas', backref='peludos', lazy=True)
     vendas_on_peludo = db.relationship('Vendas', secondary=association_table,
-                            back_populates="peludos_on_venda")
+                                       back_populates="peludos_on_venda")
 
     def get_idade(self):
         """Calcula a idade."""
