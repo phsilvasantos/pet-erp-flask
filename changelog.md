@@ -2,29 +2,16 @@
 
 ## todo
 
-2018-11-24
+2018-11-26
 - add api
 - launch
-
-
-## mapa lista vendas
-
-- home > lista aberto > click item
-- detalhes aberto
-    - descricao
-    - modificar
-    - add $$$
-    - listar $$$ somente se já tem
-
-- listagem pagamentos > click item
-- details d_pagamentos
 
 
 
 2018-11-24
 - excluir clientes ok
-- excluir pagamentos
-- excluir vendas
+- excluir pagamentos - ok
+- excluir vendas - ok
 - modificar registros
 - adicionar dados reais do excel
 - api

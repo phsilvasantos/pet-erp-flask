@@ -81,7 +81,7 @@ def cadastro_peludos():
 @views_cadastros.route('/exclusao/<tipo>/<int:id>', methods=['GET', 'POST'])
 def exclusao(tipo, id):
     """Exclui registro."""
-    if tipo == 'vendas':
+    if tipo in ['vendas', 'aberto']:
         venda = Vendas.query.get(id)
         pagamentos = Pagamentos.query.filter(Pagamentos.venda_id == id).all()
 
@@ -115,8 +115,12 @@ def exclusao(tipo, id):
         db.session.commit()
         return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))
 
-    if tipo == 'pagamentos':
+    if tipo == 'd_pagamento':
         pagamento = Pagamentos.query.get(id)
+        venda = Vendas.query.get(pagamento.venda_id)
+
         db.session.delete(pagamento)
+        venda.saldo = venda.calcula_saldo()
         db.session.commit()
+
         return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))

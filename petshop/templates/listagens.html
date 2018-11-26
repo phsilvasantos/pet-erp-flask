@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+<br>
 
 {% if heading is string %}
     <h3 class="display-5">{{ heading }}</h3>
@@ -79,7 +80,7 @@
 
 <div class="botoes">
     <br>
-{% if tipo == 'vendas' %}
+{% if tipo in ['vendas', 'aberto'] %}
     <h4>Cadastrar novas vendas de:</h4>
 
     <a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">

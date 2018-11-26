@@ -39,7 +39,7 @@
         href="{{ url_for('views_pagamentos.pagamentos', id=item.id) }}">Adicionar $$$</a>
     {% endif %}
 
-    {% if (item.saldo) %}
+    {% if (tem_pagamentos) %}
     <a class="btn btn-primary"
     href="{{ url_for('views_consultas.listagens',
                 tipo='pagamentos', id = item.id) }}">
