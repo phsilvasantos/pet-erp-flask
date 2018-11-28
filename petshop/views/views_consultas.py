@@ -1,7 +1,7 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from petshop import db
 from petshop.modelos.forms import Form_clientes, Form_peludos
-from petshop.modelos.models import Clientes, Peludos, Vendas, Pagamentos
+from petshop.modelos.models import Clientes, Peludos, Vendas, Pagamentos, Enderecos, Contatos
 from sqlalchemy import desc, or_
 
 views_consultas = Blueprint('views_consultas', __name__)
@@ -117,7 +117,7 @@ def details(tipo, id):
         venda = Vendas.query.get(id)
         tem_pagamentos = len(venda.pagamentos)
         # saldo = venda.saldo
-        heading = f'Detalhes para {venda.descricao}'
+        heading = [f'Detalhes para {venda.descricao}']
         return render_template('details.html', item=venda,
                                heading=heading, tipo=tipo,
                                tem_pagamentos=tem_pagamentos)
@@ -129,20 +129,33 @@ def details(tipo, id):
     #                            heading=heading, tipo=tipo)
 
     if tipo == 'clientes':
+        # cliente = Clientes.query.first()
+
         cliente = Clientes.query.get(id)
-        heading = f'Detalhes para {cliente.nome}'
+        endereco = Enderecos.query.filter(Enderecos.cliente_id == cliente.id).first()
+        contato = Contatos.query.filter(Contatos.cliente_id == cliente.id).first()
+        peludos = Peludos.query.filter(Peludos.cliente_id == cliente.id).all()
+        peludos = [pel.nome for pel in peludos]
+        peludos = ' | '.join(peludos)
+        vendas = Vendas.query.filter(Vendas.cliente_id == cliente.id).all()
+
+        heading = [f'Detalhes para {cliente.nome}',
+                   f'Contato: {contato}',
+                   f'Endereço: {endereco}',
+                   f'Responsável por {peludos}']
+
         return render_template('details.html', item=cliente,
-                               heading=heading, tipo=tipo)
+                               heading=heading, tipo=tipo, vendas=vendas)
 
     if tipo == 'peludos':
         peludo = Peludos.query.get(id)
-        heading = f'Detalhes para {peludo.nome}'
+        heading = [f'Detalhes para {peludo.nome}']
         return render_template('details.html', item=peludo,
                                heading=heading, tipo=tipo)
 
     if tipo == 'pagamentos':
         pagamento = Pagamentos.query.get(id)
-        heading = f'Detalhes para pagamento de {pagamento.valor}'
+        heading = [f'Detalhes para pagamento de {pagamento.valor}']
         return render_template('details.html', item=pagamento,
                                heading=heading, tipo=tipo)
 

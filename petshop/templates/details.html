@@ -3,24 +3,18 @@
 
 <br>
 
-{% if tipo == 'd_pagamento'%}
-    <h3 class="display-5">{{ heading[0] }}</h3>
-    <hr>
+
+<h3 class="display-5">{{ heading[0] }}</h3>
+
+
+
+<div class="jumbotron">
+
     <ul>
     {% for head in heading %}
         <li>{{ head }}</li>
     {% endfor %}
     </ul>
-
-{% else %}
-    <h3 class="display-5">{{ heading }}</h3>
-
-{% endif %}
-
-
-<div class="jumbotron">
-
-    {{ item }}
 
 </div>
 
@@ -49,11 +43,13 @@
 
 {% elif tipo == 'clientes' %}
 
-    <a class="btn btn-primary"
-    href="{{ url_for('views_consultas.listagens',
-                tipo='ver_vendas', id = item.id) }}">
-    Listar compras
-    </a>
+    {% if vendas %}
+        <a class="btn btn-primary"
+        href="{{ url_for('views_consultas.listagens',
+                    tipo='ver_vendas', id = item.id) }}">
+        Listar compras
+        </a>
+    {% endif %}
 
     <a class="btn btn-primary"
     href="#">
@@ -69,10 +65,6 @@
     href="{{ url_for('views_pagamentos.pagamentos', id=listagem.items[0].venda_id) }}">Adicionar $$$</a>
 {% endif %}
 
-<a class="btn btn-primary"
-href="#">
-Modificar
-</a>
 
 <a class="btn btn-primary"
 href="{{ url_for('views_cadastros.exclusao', id=item.id, tipo=tipo) }}">

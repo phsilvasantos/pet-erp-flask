@@ -2,19 +2,33 @@
 
 ## todo
 
-2018-11-26
-- zerar db, tirar do git hub
-- model cliente real
-- adicionar dados excel
+2018-11-28
+- create readme - ok
+- testing
 - add api
 - launch aws
 - modificar registros
-- adicionar dados reais do excel
+- better detais - halfway
 - listema de login e db para cada user
 - fix paginador
 - pagamentos valor 0
 - validacao nos campos
+- adicionar aviso para exclusão
+- consertar calculo de idade para null - ok
 
+
+2018-11-26
+- zerar db, tirar do git hub - ok
+- model cliente real - ok
+- adicionar dados excel - ok
+- add api
+- launch aws
+- modificar registros
+- adicionar dados reais do excel - ok
+- listema de login e db para cada user
+- fix paginador
+- pagamentos valor 0
+- validacao nos campos
 
 
 2018-11-24

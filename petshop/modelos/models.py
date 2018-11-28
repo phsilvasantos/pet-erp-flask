@@ -12,7 +12,6 @@ class Clientes(db.Model):
 
     nome = db.Column(db.String(30), nullable=False)
     profissao = db.Column(db.String(30), nullable=True)
-    # sexo = db.Column(db.Enum('M', 'H'), nullable=False)
     sexo = db.Column(db.String(1), nullable=False)
     nascimento = db.Column(db.Date, nullable=True)
 
@@ -27,7 +26,7 @@ class Clientes(db.Model):
         caes_cliente = [i.nome for i in caes_cliente]
         if caes_cliente:
             texto = ' | '.join(caes_cliente)
-            return f'dono de {texto}'
+            return f'Responsável por {texto}'
         return 'sem peludos ainda'
 
     def __init__(self, nome, sexo):
@@ -38,10 +37,11 @@ class Clientes(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        {self.nome}, da {self.endereco[0]} - tel {self.contato[0]}
+        {self.nome}, da {self.endereco[0]} - {self.contato[0]}
         - {self.lista_peludos()}
         """
-
+# {self.nome}, da {self.endereco[0]} - tel {self.contato[0]}
+# - {self.lista_peludos()}
 
 association_table = db.Table('association',
                              db.Column('peludos_id', db.Integer,
@@ -75,8 +75,12 @@ class Peludos(db.Model):
 
     def get_idade(self):
         """Calcula a idade."""
-        diff = dt.date.today() - self.nascimento
-        return round(diff.days/365, 2)
+        try:
+            diff = dt.date.today() - self.nascimento
+            idade = round(diff.days/365, 2)
+            return f'com {idade} anos.'
+        except Exception:
+            return 'sem idade.'
 
     def __init__(self, nome, breed, pelagem, nascimento, start, sexo, castrado):
         """
@@ -95,8 +99,8 @@ class Peludos(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        {self.nome}, um {self.breed} de pelo {self.pelagem} com {self.get_idade()} anos.
-        Cliente: {Clientes.query.get(self.cliente_id).nome}
+        {self.nome}, um {self.breed} de pelo {self.pelagem} {self.get_idade()}
+        Responsável: {Clientes.query.get(self.cliente_id).nome}
         """
 
 
@@ -108,9 +112,11 @@ class Enderecos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rua = db.Column(db.String(30))
     numero = db.Column(db.Integer)
+    complemento = db.Column(db.String(10))
     bairro = db.Column(db.String(30))
     cidade = db.Column(db.String(30))
     estado = db.Column(db.CHAR(2))
+    cep = db.Column(db.String(9))
     distancia = db.Column(db.Float)
     cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='endereco')
@@ -126,7 +132,7 @@ class Enderecos(db.Model):
 
     def __repr__(self):
         """Representação."""
-        return f"{self.rua}, {self.numero} em {self.cidade}"
+        return f"{self.rua}, {self.numero} em {self.bairro} - {self.cidade}"
 
 
 class Contatos(db.Model):
@@ -150,7 +156,7 @@ class Contatos(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        {self.tel1}, {self.email}
+        tel.: {self.tel1}, e-mail: {self.email}
         """
 
 

@@ -10,9 +10,11 @@ import pandas as pd
 
 Clientes.query.all()
 
-cliente = Clientes.query.filter_by(nome='Aline').first()
-cliente
+cliente = Clientes.query.first()
+cliente.id
+cliente.endereco
 
+Enderecos.query.all()
 
 # seletor para forms - clientes
 db.session.query(Clientes).all()
