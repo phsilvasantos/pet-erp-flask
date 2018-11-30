@@ -16,25 +16,38 @@
 
 
     <div class="form-row align-items-center">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-5">
         {{ form.nome.label }}
         {{ form.nome(class_="form-control") }}
+        </div>
+
+        <div class="form-group col-md-2">
+        {{ form.id.label }}
+        {{ form.id(class_="form-control") }}
         </div>
 
         <div class="form-group col-md-2">
         {{ form.sexo.label }}
         {{ form.sexo(class_="form-control") }}
         </div>
+
+
     </div>
 
 
     <div class="form-row align-items-center">
-        <div class="form-group col-md-3">
+
+        <div class="form-group col-md-2">
+        {{ form.nascimento.label }}
+        {{ form.nascimento(class_="form-control input-group date") }}
+        </div>
+
+        <div class="form-group col-md-2">
         {{ form.tel1.label }}
         {{ form.tel1(class_="form-control") }}
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
         {{ form.tel2.label }}
         {{ form.tel2(class_="form-control") }}
         </div>
@@ -51,12 +64,17 @@
         {{ form.rua(class_="form-control") }}
         </div>
 
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-1">
         {{ form.numero.label }}
         {{ form.numero(class_="form-control") }}
         </div>
 
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
+        {{ form.complemento.label }}
+        {{ form.complemento(class_="form-control") }}
+        </div>
+
+        <div class="form-group col-md-2">
         {{ form.bairro.label }}
         {{ form.bairro(class_="form-control") }}
         </div>
@@ -78,6 +96,12 @@
         {{ form.distancia.label }}
         {{ form.distancia(class_="form-control") }}
         </div>
+
+        <div class="form-group col-md-2">
+        {{ form.profissao.label }}
+        {{ form.profissao(class_="form-control") }}
+        </div>
+
     </div>
 
     <div class="form-row align-items-center">

@@ -29,10 +29,13 @@ class Clientes(db.Model):
             return f'Responsável por {texto}'
         return 'sem peludos ainda'
 
-    def __init__(self, nome, sexo):
-        """Cria a entidade - nome, sexo."""
+    def __init__(self, id, nome, sexo, profissao, nascimento):
+        """Cria a entidade - id, nome, sexo, profissao, nascimento."""
+        self.id = id
         self.nome = nome
         self.sexo = sexo
+        self.profissao = profissao
+        self.nascimento = nascimento
 
     def __repr__(self):
         """Representação."""
@@ -67,7 +70,7 @@ class Peludos(db.Model):
     sexo = db.Column(db.String(1), nullable=False)
     # castrado = db.Column(db.Enum('S', 'N'), nullable=False)
     castrado = db.Column(db.String(1), nullable=False)
-    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+    cliente_id = db.Column(db.String(15), db.ForeignKey('clientes.id'))
 
     # venda = db.relationship('Vendas', backref='peludos', lazy=True)
     vendas_on_peludo = db.relationship('Vendas', secondary=association_table,
@@ -118,17 +121,22 @@ class Enderecos(db.Model):
     estado = db.Column(db.CHAR(2))
     cep = db.Column(db.String(9))
     distancia = db.Column(db.Float)
-    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+    cliente_id = db.Column(db.String(15), db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='endereco')
 
-    def _init_(self, rua, numero, bairro, cidade, estado, distancia):
+    def _init_(self, rua, numero, complemento, bairro,
+               cidade, estado, cep, distancia, cliente_id):
 
         self.rua = rua
         self.numero = numero
+        self.complemento = complemento
         self.bairro = bairro
         self.cidade = cidade
         self.estado = estado
+        self.cep = cep
         self.distancia = distancia
+        self.cliente_id = cliente_id
+        # self.cliente_id = cliente_id
 
     def __repr__(self):
         """Representação."""
@@ -144,14 +152,15 @@ class Contatos(db.Model):
     tel1 = db.Column(db.String(13))
     tel2 = db.Column(db.String(13))
     email = db.Column(db.String(30))
-    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+    cliente_id = db.Column(db.String(15), db.ForeignKey('clientes.id'))
     # cliente = db.relationship('Cliente', back_populates='contato')
 
-    def _init_(self, tel1, tel2, email):
+    def _init_(self, tel1, tel2, email, cliente_id):
         """Tel1, tel2, email."""
         self.tel1 = tel1
         self.tel2 = tel2
         self.email = email
+        self.cliente_id = cliente_id
 
     def __repr__(self):
         """Representação."""
@@ -177,7 +186,7 @@ class Vendas(db.Model):
     data_venda = db.Column(db.Date, nullable=False)
     valor_servicos = db.Column(db.Float, nullable=True)
     valor_taxi = db.Column(db.Float, nullable=True)
-    cliente_id = db.Column(db.Integer, db.ForeignKey('clientes.id'))
+    cliente_id = db.Column(db.String(15), db.ForeignKey('clientes.id'))
     peludos_on_venda = db.relationship(
         "Peludos",
         secondary=association_table,

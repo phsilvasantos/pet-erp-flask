@@ -1,6 +1,6 @@
 """Testing crud."""
 from petshop import db
-from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos, Vendas, Pagamentos
+from petshop.modelos.models import *
 
 
 

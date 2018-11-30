@@ -14,26 +14,41 @@ def cadastro_clientes():
     form = Form_clientes()
 
     if form.validate_on_submit():
+        id = form.id.data
         nome = form.nome.data
+        profissao = form.profissao.data
         sexo = form.sexo.data
+        nascimento = form.nascimento.data
         tel1 = form.tel1.data
         tel2 = form.tel2.data
         email = form.email.data
         rua = form.rua.data
         numero = form.numero.data
+        complemento = form.complemento.data
         bairro = form.bairro.data
         cidade = form.cidade.data
         estado = form.estado.data
+        cep = form.cep.data
         distancia = form.distancia.data
 
         # db part
-        n_cliente = Clientes(nome=nome, sexo=sexo)
-        n_endereco = Enderecos(rua=rua, numero=numero, bairro=bairro,
+        n_cliente = Clientes(id=id, nome=nome, sexo=sexo,
+                             profissao=profissao, nascimento=nascimento)
+
+        n_endereco = Enderecos(rua=rua,
+                               numero=numero,
+                               complemento=complemento,
+                               bairro=bairro,
                                cidade=cidade,
                                estado=estado,
-                               distancia=distancia)
+                               cep=cep,
+                               distancia=distancia,
+                               cliente_id=id)
 
-        n_contato = Contatos(tel1=tel1, tel2=tel2, email=email)
+        n_contato = Contatos(tel1=tel1, tel2=tel2, email=email, cliente_id=id)
+
+        db.session.add(n_endereco)
+        db.session.add(n_contato)
 
         n_cliente.endereco.append(n_endereco)
         n_cliente.contato.append(n_contato)
@@ -93,17 +108,31 @@ def exclusao(tipo, id):
         return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))
 
     if tipo == 'clientes':
+        # id = '31554651824'
         cliente = Clientes.query.get(id)
         vendas = Vendas.query.filter(Vendas.cliente_id == id).all()
         for venda in vendas:
             pagamentos = Pagamentos.query.filter(Pagamentos.venda_id == venda.id).all()
             for pagto in pagamentos:
-                db.session.delete(pagto)
-            db.session.delete(venda)
+                if pagto:
+                    db.session.delete(pagto)
+            if venda:
+                db.session.delete(venda)
 
         peludos = Peludos.query.filter(Peludos.cliente_id == id).all()
         for peludo in peludos:
-            db.session.delete(peludo)
+            if(peludo):
+                db.session.delete(peludo)
+
+        enderecos = Enderecos.query.filter(Enderecos.cliente_id == id).all()
+        for endereco in enderecos:
+            if(endereco):
+                db.session.delete(endereco)
+
+        contatos = Contatos.query.filter(Contatos.cliente_id == id).all()
+        for contato in contatos:
+            if(contato):
+                db.session.delete(contato)
 
         db.session.delete(cliente)
         db.session.commit()

@@ -13,7 +13,7 @@ def index():
     page = request.args.get('page', 1, type=int)
     # listagem = Vendas.query.filter(
     #     Vendas.saldo > 0).paginate(page=page, per_page=5)
-    page = 1
+    # page = 1
     listagem = (Vendas
                 .query
                 .filter(or_(Vendas.saldo > 0, Vendas.saldo == None))

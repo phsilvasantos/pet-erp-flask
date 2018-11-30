@@ -12,17 +12,25 @@ from wtforms.fields import (SubmitField,
                             SelectMultipleField
                             )
 
-from wtforms.validators import DataRequired, Email, Regexp
+from wtforms.validators import DataRequired, Email
 
 
 class Form_clientes(FlaskForm):
     """Form cliente."""
 
+    id = StringField('CPF', validators=[DataRequired()])
     nome = StringField('Nome Completo', validators=[DataRequired()])
+    profissao = StringField('Profissão')
+
     sexo = SelectField(
                         'Sexo', choices=[('M', 'Mulher'), ('H', 'Homem')],
                         validators=[DataRequired()]
                         )
+
+    nascimento = DateField(
+                            'Data de Nascimento',
+                            validators=[DataRequired()]
+                            )
 
     tel1 = StringField('Tel.1', validators=[DataRequired()])
     tel2 = StringField('Tel.2', validators=[DataRequired()])
@@ -30,12 +38,15 @@ class Form_clientes(FlaskForm):
 
     rua = StringField('Rua', validators=[DataRequired()])
     numero = IntegerField('Número', validators=[DataRequired()])
+    complemento = StringField('Complemento')
     bairro = StringField('Bairo', validators=[DataRequired()])
     cidade = StringField('Cidade', default='Santo André',
                          validators=[DataRequired()])
     estado = StringField('Estado', default='SP', validators=[DataRequired()])
+    cep = StringField('CEP')
+
     distancia = FloatField('Distância', default=5,
-                             validators=[DataRequired()])
+                           validators=[DataRequired()])
 
     submit = SubmitField('Adiciona cliente')
 

@@ -7,14 +7,14 @@ from sqlalchemy import or_, and_
 
 import sqlite3 #To write database
 
-
+del df
 df = pd.read_excel('cadastro_sistema.xlsx')
 df = df.dropna(subset=['CPF'])
 df.CPF = df.CPF.apply(str)
 df.CPF = df.CPF.str.split('.').str[0]
 
 # clientes
-df_clientes = df.iloc[:,:14]
+df_clientes = df.iloc[:,:14].copy()
 
 colunas = ['id', 'nascimento', 'profissao', 'nome', 'tel1', 'tel2',
            'email', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'cep', 'distancia']
@@ -39,23 +39,10 @@ query = db.session.query(
     Clientes.id,
     Clientes.nascimento,
     Clientes.profissao
-
     )
 
 df = pd.read_sql(query.statement, db.session.bind)
 df
-
-clientes = Clientes.query.all()
-aline = clientes[0]
-aline
-
-aline.id
-aline.nome
-aline.nascimento
-aline.profissao
-for cliente in clientes:
-    print(cliente)
-
 
 # endereços
 
@@ -115,10 +102,13 @@ df_testing
 
 # caes
 
+
+
 for item in enumerate(df.columns):
     print(item)
 
-df_ingesting = df.iloc[:,[0,16,17,18,19,20,21,22]].copy()
+df_ingesting = df.iloc[:, [0, 16, 17, 18, 19, 20, 21, 22]].copy()
+
 df_ingesting.columns
 
 df_ingesting.columns = ['cliente_id', 'nome', 'breed',
@@ -151,3 +141,44 @@ df_testing.to_excel('testing.xlsx', index=False)
 df_testing
 
 #
+clientes = Clientes.query.all()
+aline = clientes[0]
+aline
+
+aline.id
+aline.nome
+aline.nascimento
+aline.profissao
+aline.endereco
+aline.contato
+
+for cliente in clientes:
+    print(cliente)
+
+endereco = Enderecos.query.first()
+endereco.cliente_id
+endereco.id
+
+
+contato = Contatos.query.first()
+contato
+
+contato.id
+contato.cliente_id
+contato.tel1
+contato.tel2
+####
+
+id = "31554651824"
+erick = Clientes.query.get(id)
+erick
+erick.id
+erick.nome
+erick.endereco
+erick.nascimento
+erick.contato
+
+endereco = Enderecos.query.filter(Enderecos.cliente_id == id).all()
+endereco
+
+Enderecos.query.all()

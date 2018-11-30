@@ -2,6 +2,21 @@
 
 ## todo
 
+2018-11-29
+- testing
+- add api
+- launch aws
+- modificar registros
+- better details - halfway
+- listema de login e db para cada user
+- fix paginador
+- pagamentos valor 0
+- validacao nos campos
+- adicionar aviso para exclusão - ok
+- form clientes -
+- fix registro de novos clientes - sem contato e endereço?
+- layout dos botoes
+
 2018-11-28
 - create readme - ok
 - testing

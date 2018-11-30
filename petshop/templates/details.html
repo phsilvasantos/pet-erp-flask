@@ -11,7 +11,7 @@
 <div class="jumbotron">
 
     <ul>
-    {% for head in heading %}
+    {% for head in heading[1:] %}
         <li>{{ head }}</li>
     {% endfor %}
     </ul>
@@ -66,10 +66,47 @@
 {% endif %}
 
 
-<a class="btn btn-primary"
-href="{{ url_for('views_cadastros.exclusao', id=item.id, tipo=tipo) }}">
-Excluir
-</a>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#excluir">
+    Excluir
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="excluir" tabindex="-1" role="dialog" aria-labelledby="excluir" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="excluir">Excluir Registro?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          Você tem certeza de que quer excluir este registro?
+
+          {% if tipo == 'clientes' %}
+          <br>
+          Todos os cães, vendas e pagamentos deste cliente serão exluídos também!
+          {% endif %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Não!</button>
+        <a class="btn btn-danger" href='{{ url_for('views_cadastros.exclusao', id=item.id, tipo=tipo) }}'>Excluir</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 </div>
 
