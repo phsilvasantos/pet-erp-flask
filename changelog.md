@@ -2,20 +2,59 @@
 
 ## todo
 
+2018-12-04
+- listema de login e db para cada user
+- launch aws
+- test extracting data through remote
+- add api
+- modificar registros
+- testing - cadastro looks good
+- testing vendas
+
+
+
+2018-12-03
+- testing - cadastro looks good
+- testing vendas
+- add api
+- launch aws
+- modificar registros
+- listema de login e db para cada user
+- fix paginador - ok
+- pagamentos valor 0 - ok
+- validacao nos campos - ok
+- layout dos botoes - ok
+- adicionar detalhes para peludos / para vendas - ok
+- sort lista de clientes quando for cadastrar novo peludo - por nome - ok
+- lista de clientes - botao para incluir cachorro - ok
+- botao ùltimas compras - ok
+- botao nova venda para cliente x - ok
+- detalhes de vendas - remover botao add $$$ qdo saldo > 0 - ok
+- teste para valor de entrada acima do saldo - ok
+
+
+
 2018-11-29
 - testing
 - add api
 - launch aws
 - modificar registros
-- better details - halfway
+- better details - halfway - add dogs
 - listema de login e db para cada user
 - fix paginador
 - pagamentos valor 0
 - validacao nos campos
 - adicionar aviso para exclusão - ok
-- form clientes -
-- fix registro de novos clientes - sem contato e endereço?
+- form clientes - ok
+- fix registro de novos clientes - sem contato e endereço? - ok
+- fix add dogs - ok
 - layout dos botoes
+- lista de clientes - botao para incluir cachorro
+- adicionar detalhes para peludos / para vendas
+- testar funcionamento dos parents/children
+- sort lista de clientes quando for cadastrar novo peludo
+- problema listagem de peludos - último botao - all ok
+- id não atribuido para cadastro de novos caes...  - ok
 
 2018-11-28
 - create readme - ok

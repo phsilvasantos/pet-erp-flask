@@ -10,26 +10,25 @@ views_cadastros = Blueprint('views_cadastros', __name__)
                        methods=['GET', 'POST'])
 def cadastro_clientes():
     """Cadastra / modifica clientes."""
-    # operacoes: cadastrar, modificar
     form = Form_clientes()
 
     if form.validate_on_submit():
+        bairro = form.bairro.data
+        cep = form.cep.data
+        cidade = form.cidade.data
+        complemento = form.complemento.data
+        distancia = form.distancia.data
+        email = form.email.data
+        estado = form.estado.data
         id = form.id.data
-        nome = form.nome.data
-        profissao = form.profissao.data
-        sexo = form.sexo.data
         nascimento = form.nascimento.data
+        nome = form.nome.data
+        numero = form.numero.data
+        profissao = form.profissao.data
+        rua = form.rua.data
+        sexo = form.sexo.data
         tel1 = form.tel1.data
         tel2 = form.tel2.data
-        email = form.email.data
-        rua = form.rua.data
-        numero = form.numero.data
-        complemento = form.complemento.data
-        bairro = form.bairro.data
-        cidade = form.cidade.data
-        estado = form.estado.data
-        cep = form.cep.data
-        distancia = form.distancia.data
 
         # db part
         n_cliente = Clientes(id=id, nome=nome, sexo=sexo,
@@ -47,23 +46,29 @@ def cadastro_clientes():
 
         n_contato = Contatos(tel1=tel1, tel2=tel2, email=email, cliente_id=id)
 
-        db.session.add(n_endereco)
-        db.session.add(n_contato)
-
         n_cliente.endereco.append(n_endereco)
         n_cliente.contato.append(n_contato)
         db.session.add(n_cliente)
         db.session.commit()
 
-        return redirect(url_for('views_consultas.listagens', id=0, tipo='clientes'))
+        return redirect(url_for('views_consultas.listagens', id=0,
+                                tipo='clientes'))
     return render_template('cadastro_clientes.html', form=form)
 
 
 @views_cadastros.route('/cadastro_peludos', methods=['GET', 'POST'])
 def cadastro_peludos():
     """Cadastra peludos."""
-    clientes_cadastrados = Clientes.query.all()
+    cliente_id = request.args.get('id', 0, type=int)
+
+    if cliente_id:
+        clientes_cadastrados = [Clientes.query.get(cliente_id)]
+    else:
+        clientes_cadastrados = Clientes.query.all()
+
     lista_clientes = [(i.id, i.nome) for i in clientes_cadastrados]
+
+    lista_clientes = sorted(lista_clientes, key=lambda item: item[1])
 
     form = Form_peludos()
     form.cliente.choices = lista_clientes
@@ -79,16 +84,22 @@ def cadastro_peludos():
         castrado = form.castrado.data
 
         # db part
-        n_peludo = Peludos(nome, breed, pelagem, nascimento,
-                           data_start, sexo, castrado)
+        n_peludo = Peludos(nome=nome,
+                           breed=breed,
+                           pelagem=pelagem,
+                           nascimento=nascimento,
+                           data_start=data_start,
+                           sexo=sexo,
+                           castrado=castrado)
 
         n_cliente = Clientes.query.get(cliente)
 
-        db.session.add(n_peludo)
+        # db.session.add(n_peludo)
         n_cliente.peludo.append(n_peludo)
         db.session.commit()
 
-        return redirect(url_for('views_consultas.listagens', id=0, tipo='peludos'))
+        return redirect(url_for('views_consultas.listagens', id=0,
+                                tipo='peludos'))
 
     return render_template('cadastro_peludos.html', form=form)
 
@@ -108,7 +119,6 @@ def exclusao(tipo, id):
         return redirect(url_for('views_consultas.listagens', id=0, tipo=tipo))
 
     if tipo == 'clientes':
-        # id = '31554651824'
         cliente = Clientes.query.get(id)
         vendas = Vendas.query.filter(Vendas.cliente_id == id).all()
         for venda in vendas:

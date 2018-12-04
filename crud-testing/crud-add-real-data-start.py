@@ -32,7 +32,7 @@ df_pessoas.shape
 
 
 cxn = sqlite3.connect('petshop/data.sqlite')
-df_pessoas.to_sql('clientes', cxn, index=False, if_exists='replace')
+df_pessoas.to_sql('clientes', cxn, index=False, if_exists='append')
 
 query = db.session.query(
     Clientes.nome,
@@ -54,14 +54,14 @@ df_enderecos.columns
 df_enderecos['estado'] = 'SP'
 
 df_enderecos = df_enderecos.rename({'id': 'cliente_id'}, axis=1)
-df_enderecos['id'] = df_enderecos.index + 1
+df_enderecos['id'] = df_enderecos.index + 2
 
 df_enderecos.cep = df_enderecos.cep.apply(str).str.split('.').str[0]
 df_enderecos.cep = str(0) + df_enderecos.cep
 
 df_enderecos.head()
 cxn = sqlite3.connect('petshop/data.sqlite')
-df_enderecos.to_sql('enderecos', cxn, index=False, if_exists='replace')
+df_enderecos.to_sql('enderecos', cxn, index=False, if_exists='append')
 
 # testing
 enderecos = Enderecos.query.all()
@@ -77,10 +77,10 @@ for item in enumerate(df_clientes.columns):
 df_ingesting = df_clientes.iloc[:,[0,4,5,6]].copy()
 
 df_ingesting = df_ingesting.rename({'id': 'cliente_id'}, axis=1)
-df_ingesting['id'] = df_enderecos.index + 1
+df_ingesting['id'] = df_enderecos.index + 2
 df_ingesting.head()
 
-df_ingesting.to_sql('contatos', cxn, index=False, if_exists='replace')
+df_ingesting.to_sql('contatos', cxn, index=False, if_exists='append')
 
 # testing
 contatos = Contatos.query.all()
@@ -102,7 +102,7 @@ df_testing
 
 # caes
 
-
+#######
 
 for item in enumerate(df.columns):
     print(item)
@@ -114,10 +114,10 @@ df_ingesting.columns
 df_ingesting.columns = ['cliente_id', 'nome', 'breed',
                         'sexo', 'pelagem', 'nascimento', 'data_start', 'castrado']
 
-df_ingesting['id'] = df_enderecos.index + 1
+df_ingesting['id'] = df_enderecos.index + 2
 
 df_ingesting.head()
-df_ingesting.to_sql('peludos', cxn, index=False, if_exists='replace')
+df_ingesting.to_sql('peludos', cxn, index=False, if_exists='append')
 
 # testing
 caes = Peludos.query.all()
@@ -182,3 +182,6 @@ endereco = Enderecos.query.filter(Enderecos.cliente_id == id).all()
 endereco
 
 Enderecos.query.all()
+
+Peludos.query.filter(Peludos.cliente_id == '31554651824').all()
+Peludos.query.all()

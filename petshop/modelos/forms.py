@@ -6,13 +6,19 @@ from wtforms_components import (
                     DateField,
                     # SelectMultipleField, DateRange
                     )
-from wtforms.fields import (SubmitField,
+from wtforms.fields import (SubmitField, PasswordField,
                             StringField, SelectField, IntegerField,
                             FloatField,
                             SelectMultipleField
                             )
 
 from wtforms.validators import DataRequired, Email
+
+
+class Form_login(FlaskForm):
+    email = StringField('e-mail', validators=[DataRequired(), Email()])
+    passw = PasswordField('senha', validators=[DataRequired()])
+    submit = SubmitField('Entrar')
 
 
 class Form_clientes(FlaskForm):
@@ -37,15 +43,15 @@ class Form_clientes(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
 
     rua = StringField('Rua', validators=[DataRequired()])
-    numero = IntegerField('Número', validators=[DataRequired()])
-    complemento = StringField('Complemento')
+    numero = IntegerField('N.', validators=[DataRequired()])
+    complemento = StringField('Compl.')
     bairro = StringField('Bairo', validators=[DataRequired()])
     cidade = StringField('Cidade', default='Santo André',
                          validators=[DataRequired()])
     estado = StringField('Estado', default='SP', validators=[DataRequired()])
     cep = StringField('CEP')
 
-    distancia = FloatField('Distância', default=5,
+    distancia = FloatField('Dist.', default=5,
                            validators=[DataRequired()])
 
     submit = SubmitField('Adiciona cliente')
@@ -54,7 +60,7 @@ class Form_clientes(FlaskForm):
 class Form_peludos(FlaskForm):
     """Form peludo."""
 
-    cliente = SelectField(u'Dono do Peludo', choices=[], coerce=int)
+    cliente = SelectField(u'Dono do Peludo', choices=[], coerce=str)
 
     nome = StringField('Nome do peludo', validators=[DataRequired()])
     sexo = SelectField(
@@ -69,16 +75,14 @@ class Form_peludos(FlaskForm):
                         )
 
     nascimento = DateField(
-                            'Data de Nascimento',
-                            validators=[DataRequired()]
+                            'Data de Nascimento'
                             )
 
     data_start = DateField('Date de início no pet',  # format='%d-%m-%Y',
                            validators=[DataRequired()])
     castrado = SelectField(
                             'É castrado?',
-                            choices=[('S', 'Sim'), ('N', 'Não')],
-                            validators=[DataRequired()]
+                            choices=[('S', 'Sim'), ('N', 'Não')]
                             )
 
     submit = SubmitField('Adiciona peludo')
@@ -87,7 +91,7 @@ class Form_peludos(FlaskForm):
 class Form_vendas_intro(FlaskForm):
     """Form venda_intro."""
 
-    cliente = SelectField(u'Dono do peludo', choices=[], coerce=int)
+    cliente = SelectField(u'Dono do peludo', choices=[], coerce=str)
     submit = SubmitField('Continuar venda')
 
 
@@ -103,9 +107,7 @@ class Form_vendas_bt(FlaskForm):
                                   validators=[DataRequired()]
                                   )
 
-    valor_taxi = FloatField('Valor do taxi dog', default=0,
-                              # validators=[DataRequired()]
-                              )
+    valor_taxi = FloatField('Valor do taxi dog', default=0)
 
     peludos = SelectMultipleField('Peludo(s)', choices=[], coerce=int,
                                   validators=[DataRequired()]
@@ -143,19 +145,13 @@ class Form_vendas_hosp(FlaskForm):
                            validators=[DataRequired()]
                            )
 
-    valor_servicos = FloatField('Serviços adicionais', default=0,
-                                  validators=[DataRequired()]
-                                  )
+    valor_servicos = FloatField('Serviços adicionais', default=0)
 
-    valor_taxi = FloatField('Taxi dog', default=0,
-                              validators=[DataRequired()]
-                              )
+    valor_taxi = FloatField('Taxi dog', default=0)
 
     peludos = SelectMultipleField('Peludo(s)', choices=[], coerce=int)
 
-    n_banhos = IntegerField('Qtde de banhos', default=0,
-                            validators=[DataRequired()]
-                            )
+    n_banhos = IntegerField('Qtde de banhos', default=0)
 
     data_entrada = DateField('Data de entrada',
                              default=datetime.today(),
@@ -167,7 +163,7 @@ class Form_vendas_hosp(FlaskForm):
                            validators=[DataRequired()]
                            )
 
-    valor_diarias = FloatField('Vl. total diárias', default=0,
+    valor_diarias = FloatField('Vl. total diárias',
                                  validators=[DataRequired()]
                                  )
 
@@ -196,9 +192,7 @@ class Form_vendas_cursos(FlaskForm):
                            validators=[DataRequired()]
                            )
 
-    custo_prod = FloatField('Custo', default=0,
-                              validators=[DataRequired()]
-                              )
+    custo_prod = FloatField('Custo', default=0)
 
     submit = SubmitField('Registrar venda')
 
@@ -211,17 +205,13 @@ class Form_vendas_prod(FlaskForm):
     data_venda = DateField('Data da venda', default=datetime.today(),
                            validators=[DataRequired()])
 
-    valor_prod = FloatField('Valor dos produtos', default=0,
-                              validators=[DataRequired()]
-                              )
-
-    custo_prod = FloatField('Custo dos produtos', default=0,
-                              validators=[DataRequired()]
-                              )
-
-    quantidade = IntegerField('Qtde', default=1,
+    valor_prod = FloatField('Valor dos produtos',
                             validators=[DataRequired()]
                             )
+
+    custo_prod = FloatField('Custo dos produtos', default=0)
+
+    quantidade = IntegerField('Qtde', default=1)
 
     submit = SubmitField('Registrar venda')
 
@@ -243,7 +233,7 @@ class Form_pagamentos(FlaskForm):
                               )
 
     data = DateField('Data de pagamento', default=datetime.today(),
-                           validators=[DataRequired()])
+                     validators=[DataRequired()])
 
     valor = FloatField(
                                 'Valor pago',
@@ -256,3 +246,14 @@ class Form_pagamentos(FlaskForm):
                                 )
 
     submit = SubmitField('Registrar pagamento')
+
+    def validate(self):
+        """Proteje o valor de entrada."""
+        if not super().validate():
+            return False
+
+        result = True
+
+        if self.valor_entrada.data > self.valor.data:
+            result = False
+        return result

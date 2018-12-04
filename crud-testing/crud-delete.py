@@ -11,7 +11,7 @@ Enderecos.query.delete()
 Vendas.query.delete()
 Pagamentos.query.delete()
 db.session.commit()
-# db.session.rollback()
+db.session.rollback()
 
 ## read Cliente
 Clientes.query.all()

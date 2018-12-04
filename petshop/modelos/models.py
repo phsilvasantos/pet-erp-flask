@@ -1,6 +1,33 @@
-from petshop import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from petshop import db, login_manager
+from flask_login import UserMixin
 import datetime as dt
 import numpy as np
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Gerentes.query.get(user_id)
+
+
+class Gerentes(db.Model):
+    """User do sistema."""
+
+    __tablename__ = 'gerentes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(30), unique=True)
+    passh = db.Column(db.String(128))
+
+    def __init__(self, email, passw):
+        self.email = email
+        self.passh = generate_password_hash(passw)
+
+    def check_passw(self, passw):
+        return check_password_hash(self.passh, passw)
+
+
+
 
 
 class Clientes(db.Model):
@@ -40,11 +67,9 @@ class Clientes(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        {self.nome}, da {self.endereco[0]} - {self.contato[0]}
-        - {self.lista_peludos()}
+        {self.nome}, {self.lista_peludos()} - {self.contato[0]}
         """
-# {self.nome}, da {self.endereco[0]} - tel {self.contato[0]}
-# - {self.lista_peludos()}
+
 
 association_table = db.Table('association',
                              db.Column('peludos_id', db.Integer,
@@ -62,17 +87,13 @@ class Peludos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(30), nullable=False)
     breed = db.Column(db.String(20), nullable=False)
-    # pelagem = db.Column(db.Enum('longo', 'curto'), nullable=False)
     pelagem = db.Column(db.String(6), nullable=False)
     nascimento = db.Column(db.Date, nullable=True)
     data_start = db.Column(db.Date, nullable=True)
-    # sexo = db.Column(db.Enum('M', 'F'), nullable=False)
     sexo = db.Column(db.String(1), nullable=False)
-    # castrado = db.Column(db.Enum('S', 'N'), nullable=False)
     castrado = db.Column(db.String(1), nullable=False)
     cliente_id = db.Column(db.String(15), db.ForeignKey('clientes.id'))
 
-    # venda = db.relationship('Vendas', backref='peludos', lazy=True)
     vendas_on_peludo = db.relationship('Vendas', secondary=association_table,
                                        back_populates="peludos_on_venda")
 
@@ -85,7 +106,8 @@ class Peludos(db.Model):
         except Exception:
             return 'sem idade.'
 
-    def __init__(self, nome, breed, pelagem, nascimento, start, sexo, castrado):
+    def __init__(self, nome, breed, pelagem, nascimento, data_start,
+                 sexo, castrado):
         """
         Cria a entidade.
 
@@ -95,7 +117,7 @@ class Peludos(db.Model):
         self.breed = breed
         self.pelagem = pelagem
         self.nascimento = nascimento
-        self.data_start = start
+        self.data_start = data_start
         self.sexo = sexo
         self.castrado = castrado
 
@@ -122,10 +144,9 @@ class Enderecos(db.Model):
     cep = db.Column(db.String(9))
     distancia = db.Column(db.Float)
     cliente_id = db.Column(db.String(15), db.ForeignKey('clientes.id'))
-    # cliente = db.relationship('Cliente', back_populates='endereco')
 
-    def _init_(self, rua, numero, complemento, bairro,
-               cidade, estado, cep, distancia, cliente_id):
+    def _init_(self, rua, numero, complemento, bairro, cidade, estado, cep,
+               distancia, cliente_id):
 
         self.rua = rua
         self.numero = numero
@@ -136,7 +157,6 @@ class Enderecos(db.Model):
         self.cep = cep
         self.distancia = distancia
         self.cliente_id = cliente_id
-        # self.cliente_id = cliente_id
 
     def __repr__(self):
         """Representação."""
@@ -153,7 +173,6 @@ class Contatos(db.Model):
     tel2 = db.Column(db.String(13))
     email = db.Column(db.String(30))
     cliente_id = db.Column(db.String(15), db.ForeignKey('clientes.id'))
-    # cliente = db.relationship('Cliente', back_populates='contato')
 
     def _init_(self, tel1, tel2, email, cliente_id):
         """Tel1, tel2, email."""
@@ -197,7 +216,6 @@ class Vendas(db.Model):
     # banho e tosa
     data_pbanho = db.Column(db.Date, nullable=True)
     n_banhos = db.Column(db.Integer, nullable=True)
-    # tipo_banho = db.Column(db.Enum('pacote', 'avulso', 'cortesia'), nullable=True)
     tipo_banho = db.Column(db.String(15), nullable=True)
     pacote = db.Column(db.String(10), nullable=True)
 
@@ -268,8 +286,10 @@ class Vendas(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        {self.descricao}, em {self.data_venda} no valor de {self.calcula_saldo(tipo='total')}
-        para {Clientes.query.get(self.cliente_id).nome} - saldo: R${self.calcula_saldo()}
+        {self.descricao}, em {self.data_venda} no valor de
+        {self.calcula_saldo(tipo='total')} para
+        {Clientes.query.get(self.cliente_id).nome}
+        - saldo: R${self.calcula_saldo()}
         """
 
 
@@ -286,15 +306,9 @@ class Pagamentos(db.Model):
     data = db.Column(db.Date, nullable=False)
     valor = db.Column(db.Float, nullable=False)
     valor_entrada = db.Column(db.Float, nullable=False)
-    # tipo_venda = db.Column(
-    #     db.Enum('banhos', 'hospedagens', 'cursos', 'produtos', 'outros'), nullable=False)
     forma_pagto = db.Column(
-        # db.Enum('cash', 'debito', 'credito', 'cheque', 'pendente'), nullable=False)
         db.String(15), nullable=False)
-    # # data_pagto = db.Column(db.Date, nullable=False)
-    # valor_entrada = db.Column(db.Numeric, nullable=False)
     venda_id = db.Column(db.Integer, db.ForeignKey('vendas.id'))
-    # PrimaryKeyConstraint('id', 'version_id', name='mytable_pk')
 
     def _init_(
         self, data, valor, valor_entrada, forma_pagto
@@ -308,5 +322,6 @@ class Pagamentos(db.Model):
     def __repr__(self):
         """Representação."""
         return f"""
-        Pagamento em {self.data}, por {self.forma_pagto}, no valor de {self.valor}
+        Pagamento em {self.data}, por {self.forma_pagto},
+        no valor de {self.valor}
         """

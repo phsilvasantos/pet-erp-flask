@@ -21,12 +21,13 @@
 
 
 <div class="botoes">
-{% if tipo in ['vendas', 'aberto'] %}
+{% if tipo in ['vendas', 'aberto', 'ver_vendas'] %}
 
-    {% if (item.saldo) %}
-        {% if (item.saldo > 0) %}
+    {% if saldo != None %}
+        {% if (saldo > 0) %}
             <a class="btn btn-primary"
-            href="{{ url_for('views_pagamentos.pagamentos', id=item.id) }}">Adicionar $$$</a>
+            href="{{ url_for('views_pagamentos.pagamentos', id=item.id) }}">Adicionar $$$
+            </a>
         {% endif %}
     {% else %}
         <a class="btn btn-primary"
@@ -43,6 +44,29 @@
 
 {% elif tipo == 'clientes' %}
 
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Nova venda
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+          <a class="dropdown-item" href="{{
+              url_for('views_vendas.vendas', tipo = 'bt', cliente_id = item.id) }}">
+              Banho & Tosa</a>
+          <a class="dropdown-item" href="{{
+              url_for('views_vendas.vendas', tipo = 'hosp', cliente_id = item.id) }}">
+              Hospedagem</a>
+          <a class="dropdown-item" href="{{
+              url_for('views_vendas.vendas', tipo = 'cursos', cliente_id = item.id) }}">
+              Cursos</a>
+          <a class="dropdown-item" href="{{
+              url_for('views_vendas.vendas', tipo = 'produtos', cliente_id = item.id) }}">
+              Produtos</a>
+        </div>
+      </div>
+    </div>
+
     {% if vendas %}
         <a class="btn btn-primary"
         href="{{ url_for('views_consultas.listagens',
@@ -51,10 +75,15 @@
         </a>
     {% endif %}
 
+    <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos', id = item.id) }}">
+    Cadastrar novo peludo
+    </a>
+
     <a class="btn btn-primary"
     href="#">
     Modificar
     </a>
+
 
 {% elif tipo == 'peludos' %}
     <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos') }}">

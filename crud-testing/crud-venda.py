@@ -5,7 +5,7 @@ from datetime import datetime
 import pandas as pd
 
 # db.metadata.clear()
-# db.create_all()
+db.create_all()
 
 
 Clientes.query.all()

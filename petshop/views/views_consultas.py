@@ -1,13 +1,16 @@
 from flask import render_template, request, Blueprint, redirect, url_for
+from flask_login import login_user, logout_user, login_required
 from petshop import db
-from petshop.modelos.forms import Form_clientes, Form_peludos
-from petshop.modelos.models import Clientes, Peludos, Vendas, Pagamentos, Enderecos, Contatos
+from petshop.modelos.forms import *
+from petshop.modelos.models import *
+
 from sqlalchemy import desc, or_
 
 views_consultas = Blueprint('views_consultas', __name__)
 
 
 @views_consultas.route('/')
+@login_required
 def index():
     """Index page."""
     page = request.args.get('page', 1, type=int)
@@ -113,20 +116,26 @@ def listagens(tipo, id):
 @views_consultas.route('/details/<tipo>/<int:id>', methods=['GET', 'POST'])
 def details(tipo, id):
     """Detalhamento de qqer coisa."""
-    if tipo in ['aberto', 'vendas']:
+    if tipo in ['aberto', 'vendas', 'ver_vendas']:
         venda = Vendas.query.get(id)
+        data = venda.data_venda.strftime('%d-%m-%Y')
+        total = venda.calcula_saldo('total')
+        saldo = venda.saldo
+        cliente = Clientes.query.get(venda.cliente_id)
         tem_pagamentos = len(venda.pagamentos)
         # saldo = venda.saldo
-        heading = [f'Detalhes para {venda.descricao}']
+        heading = [f'Detalhes para {venda.descricao}',
+                   f'Descrição: {venda.descricao}',
+                   f'Cliente: {cliente.nome}',
+                   f'Data da venda: {data}',
+                   f'Valor total: {total}',
+                   f'Saldo: {venda.saldo}'
+                   ]
+
         return render_template('details.html', item=venda,
                                heading=heading, tipo=tipo,
+                               saldo=saldo,
                                tem_pagamentos=tem_pagamentos)
-
-    # if tipo == 'vendas':
-    #     venda = Vendas.query.get(id)
-    #     heading = f'Detalhes para {venda.descricao}'
-    #     return render_template('details.html', item=venda,
-    #                            heading=heading, tipo=tipo)
 
     if tipo == 'clientes':
         # cliente = Clientes.query.first()
@@ -149,23 +158,24 @@ def details(tipo, id):
 
     if tipo == 'peludos':
         peludo = Peludos.query.get(id)
-        heading = [f'Detalhes para {peludo.nome}']
+        cliente = Clientes.query.get(peludo.cliente_id)
+        heading = [f'Detalhes para {peludo.nome}',
+                   f'Dono: {cliente.nome}',
+                   f'Raça: {peludo.breed}',
+                   f'Idade: {peludo.get_idade()}, sexo: {peludo.sexo}'
+                   ]
+
         return render_template('details.html', item=peludo,
                                heading=heading, tipo=tipo)
 
-    if tipo == 'pagamentos':
-        pagamento = Pagamentos.query.get(id)
-        heading = [f'Detalhes para pagamento de {pagamento.valor}']
-        return render_template('details.html', item=pagamento,
-                               heading=heading, tipo=tipo)
-
-    if tipo == 'd_pagamento':
+    if tipo in ['d_pagamento', 'pagamentos']:
         pagamento = Pagamentos.query.get(id)
         venda = Vendas.query.get(pagamento.venda_id)
         data = venda.data_venda.strftime('%d-%m-%Y')
         total = venda.calcula_saldo('total')
         heading = [f'Detalhes para pagamento de {pagamento.valor}',
                    f'Referente a {venda.descricao}, de {data}',
+                   f'Forma de pagamento: {pagamento.forma_pagto}',
                    f'Valor total da venda: R${total}',
                    f'Saldo da venda: R${venda.saldo}']
 

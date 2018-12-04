@@ -6,5 +6,6 @@ __pycache__
 *.xls
 *.xlsx
 petshop/data.sqlite
+petshop/credenciais.py
 migrations/
 __pycache__/

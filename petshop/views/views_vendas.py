@@ -35,6 +35,7 @@ def vendas(tipo):
         cliente = Clientes.query.get(cliente_id)
         peludos_cadastrados = Peludos.query.filter(Peludos.cliente_id == cliente_id).all()
         lista_peludos = [(i.id, i.nome) for i in peludos_cadastrados]
+        lista_peludos = sorted(lista_peludos, key=lambda item: item[1])
 
         # vendas bt
         if tipo == 'bt':
@@ -216,6 +217,7 @@ def vendas(tipo):
     else:
         clientes_cadastrados = Clientes.query.filter(Clientes.peludo != None).all()
         lista_clientes = [(i.id, i.nome) for i in clientes_cadastrados]
+        lista_clientes = sorted(lista_clientes, key=lambda item: item[1])
 
         form = Form_vendas_intro()
         form.cliente.choices = lista_clientes

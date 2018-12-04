@@ -2,15 +2,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import os
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
+import os
 
 
 app = Flask(__name__)
 Bootstrap(app)
 app.config['SECRET_KEY'] = 'mysecret'
 
-
+login_manager = LoginManager()
 # BLUEPRINT CONFIGS #######
 
 # DB Config
@@ -20,6 +21,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 Migrate(app, db)
+
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 
 from petshop.views.views_cadastros import views_cadastros
