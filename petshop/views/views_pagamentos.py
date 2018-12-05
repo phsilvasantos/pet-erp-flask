@@ -1,4 +1,5 @@
 from flask import render_template, request, Blueprint, redirect, url_for
+from flask_login import login_required
 from petshop import db
 from petshop.modelos.forms import Form_pagamentos
 from petshop.modelos.models import Vendas, Pagamentos
@@ -8,6 +9,7 @@ views_pagamentos = Blueprint('views_pagamentos', __name__)
 
 
 @views_pagamentos.route('/pagamentos/<int:id>', methods=['GET', 'POST'])
+@login_required
 def pagamentos(id):
     """Cadastra pagamentos."""
     if id:
@@ -50,7 +52,7 @@ def pagamentos(id):
 
         db.session.commit()
 
-        return redirect(url_for('views_consultas.index'))
+        return redirect(url_for('views_consultas.landing'))
 
     return render_template(
                             'pagamentos.html',

@@ -31,7 +31,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for('views_consultas.index') }}">Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ url_for('views_consultas.landing') }}">Home<span class="sr-only">(current)</span></a>
         </li>
 
         <li class="nav-item">
@@ -48,7 +48,7 @@
                 <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'cursos') }}">Cur</a>
                 <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'produtos') }}">Prod</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', id=0, tipo = 'vendas') }}">Últimas</a>
+                <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', id=0, tipo='vendas') }}">Últimas</a>
                 <a class="dropdown-item" href="#">Pesquisar</a>
             </div>
         </li>

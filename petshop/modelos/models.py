@@ -7,10 +7,11 @@ import numpy as np
 
 @login_manager.user_loader
 def load_user(user_id):
+    """Load user."""
     return Gerentes.query.get(user_id)
 
 
-class Gerentes(db.Model):
+class Gerentes(db.Model, UserMixin):
     """User do sistema."""
 
     __tablename__ = 'gerentes'
@@ -20,14 +21,14 @@ class Gerentes(db.Model):
     passh = db.Column(db.String(128))
 
     def __init__(self, email, passw):
+        """Init the class."""
         self.email = email
         self.passh = generate_password_hash(passw)
 
+
     def check_passw(self, passw):
+        """Hash check"""
         return check_password_hash(self.passh, passw)
-
-
-
 
 
 class Clientes(db.Model):

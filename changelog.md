@@ -2,14 +2,31 @@
 
 ## todo
 
+
 2018-12-04
-- listema de login e db para cada user
 - launch aws
 - test extracting data through remote
 - add api
 - modificar registros
-- testing - cadastro looks good
-- testing vendas
+- listagem após delecao de vendas / pagamentos
+- origem ok : alertas / últimas vendas /
+    - excluir peludo: com problemas
+- listar últimos banhos para peludos - ok
+- listar caes para cada dono - ok
+- listagem de caes para dono - incluir cao para este dono - not
+- botao ver dono para peludo - ok
+
+
+
+
+2018-12-04
+- listema de login e db para cada user - ok
+- launch aws
+- test extracting data through remote
+- add api
+- modificar registros
+- testing - cadastro looks good - ok
+- testing vendas - ok
 
 
 

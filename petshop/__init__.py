@@ -22,9 +22,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 Migrate(app, db)
 
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
 
 from petshop.views.views_cadastros import views_cadastros
 from petshop.views.views_consultas import views_consultas
@@ -35,3 +32,8 @@ app.register_blueprint(views_cadastros)
 app.register_blueprint(views_consultas)
 app.register_blueprint(views_vendas)
 app.register_blueprint(views_pagamentos)
+
+
+# Login manager config
+login_manager.init_app(app)
+login_manager.login_view = 'views_cadastros.login'

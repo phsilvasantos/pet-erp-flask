@@ -70,10 +70,18 @@
     {% if vendas %}
         <a class="btn btn-primary"
         href="{{ url_for('views_consultas.listagens',
-                    tipo='ver_vendas', id = item.id) }}">
+                    tipo='vendas', id = item.id) }}">
         Listar compras
         </a>
     {% endif %}
+
+    <a class="btn btn-primary"
+    href="{{ url_for('views_consultas.listagens',
+                tipo='peludos', id = item.id) }}">
+    Listar peludos
+    </a>
+
+
 
     <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos', id = item.id) }}">
     Cadastrar novo peludo
@@ -86,8 +94,37 @@
 
 
 {% elif tipo == 'peludos' %}
-    <a class="btn btn-primary" href="{{ url_for('views_cadastros.cadastro_peludos') }}">
-        Cadastrar novo peludo </a>
+
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Nova venda
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+          <a class="dropdown-item" href="{{
+              url_for('views_vendas.vendas', tipo = 'bt', cliente_id = item.cliente_id) }}">
+              Banho & Tosa</a>
+          <a class="dropdown-item" href="{{
+              url_for('views_vendas.vendas', tipo = 'hosp', cliente_id = item.cliente_id) }}">
+              Hospedagem</a>
+
+        </div>
+      </div>
+    </div>
+
+    <a class="btn btn-primary"
+    href="{{ url_for('views_consultas.listagens',
+                tipo='vendas', id = item.cliente_id) }}">
+    Listar compras
+    </a>
+
+    <a class="btn btn-primary"
+    href="{{ url_for('views_consultas.details',
+                tipo='clientes', id = item.cliente_id) }}">
+    Ver dono
+    </a>
+
 
 {% elif tipo == 'pagamentos' %}
     <a class="btn btn-primary"
@@ -127,19 +164,5 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
 </div>
-
-
-
-
 {% endblock %}

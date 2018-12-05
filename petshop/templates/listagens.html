@@ -18,7 +18,7 @@
 
     <div class="list-group">
     {% for item in listagem.items %}
-        {% if tipo in ['pagamentos'] %}
+        {% if tipo in ['pagamentos', 'd_pagamento'] %}
             <a href="{{ url_for('views_consultas.details',
                         tipo='d_pagamento', id = item.id) }}"
                         class="list-group-item list-group-item-action">
@@ -62,7 +62,7 @@
 
                 {% if tipo == 'aberto' %}
                     <a class="page-link"
-                    href="{{ url_for('views_consultas.index', page=page_num) }}">
+                    href="{{ url_for('views_consultas.landing', page=page_num) }}">
                     {{ page_num }}
                     </a>
                 {% else %}

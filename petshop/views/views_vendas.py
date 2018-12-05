@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask import render_template, request, Blueprint, redirect, url_for
+from flask_login import login_required
 from petshop import db
 from petshop.modelos.models import Clientes, Peludos, Vendas
 from petshop.modelos.forms import (
@@ -11,6 +12,7 @@ views_vendas = Blueprint('views_vendas', __name__)
 
 
 @views_vendas.route('/<int:id>', methods=['GET', 'POST'])
+@login_required
 def modifica_venda(id):
     """Cadastra vendas."""
     if(id):
@@ -19,6 +21,7 @@ def modifica_venda(id):
 
 
 @views_vendas.route('/vendas/<tipo>', methods=['GET', 'POST'])
+@login_required
 def vendas(tipo):
     """Cadastra vendas."""
     # se o cliente já foi escolhido,

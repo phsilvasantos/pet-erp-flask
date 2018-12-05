@@ -1,5 +1,5 @@
 from flask import render_template, request, Blueprint, redirect, url_for
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_required
 from petshop import db
 from petshop.modelos.forms import *
 from petshop.modelos.models import *
@@ -8,16 +8,17 @@ from sqlalchemy import desc, or_
 
 views_consultas = Blueprint('views_consultas', __name__)
 
+
 @views_consultas.route('/')
 def index():
     """Index page."""
-
     return render_template('index.html')
 
 
 @views_consultas.route('/landing')
+@login_required
 def landing():
-    """Index page."""
+    """Index page for logged people."""
     page = request.args.get('page', 1, type=int)
     # listagem = Vendas.query.filter(
     #     Vendas.saldo > 0).paginate(page=page, per_page=5)
@@ -37,9 +38,8 @@ def landing():
 
     return render_template('login_landing.html')
 
-
-
 @views_consultas.route('/listagem/<tipo>/<int:id>', methods=['GET', 'POST'])
+@login_required
 def listagens(tipo, id):
     """Listagem de qqer coisa."""
     if tipo == 'aberto':
@@ -57,11 +57,20 @@ def listagens(tipo, id):
 
     if tipo == 'vendas':
         page = request.args.get('page', 1, type=int)
-        listagem = (Vendas.query
-                    .order_by(desc(Vendas.data_venda))
-                    .paginate(page=page, per_page=5)
-                    )
         heading = 'Últimas vendas'
+
+        if id:
+            listagem = (Vendas.query
+                        .filter(Vendas.cliente_id == id)
+                        .order_by(desc(Vendas.data_venda))
+                        .paginate(page=page, per_page=5)
+                        )
+        else:
+            listagem = (Vendas.query
+                        .order_by(desc(Vendas.data_venda))
+                        .paginate(page=page, per_page=5)
+                        )
+
         return render_template('listagens.html', listagem=listagem,
                                heading=heading, tipo=tipo, id=0)
 
@@ -76,8 +85,16 @@ def listagens(tipo, id):
     if tipo == 'peludos':
         heading = 'Relação de peludos'
         page = request.args.get('page', 1, type=int)
-        listagem = Peludos.query.order_by(
-            Peludos.nome).paginate(page=page, per_page=5)
+
+        if id:
+            listagem = (Peludos.query
+                        .filter(Peludos.cliente_id == id)
+                        .order_by(Peludos.nome)
+                        .paginate(page=page, per_page=5))
+        else:
+            listagem = (Peludos.query
+                        .order_by(Peludos.nome)
+                        .paginate(page=page, per_page=5))
 
         return render_template('listagens.html', listagem=listagem,
                                heading=heading, tipo=tipo, id=0)
@@ -102,23 +119,26 @@ def listagens(tipo, id):
                                heading=heading, tipo=tipo, id=0,
                                tem_pagamentos=tem_pagamentos)
 
-    if tipo == 'ver_vendas':
-        cliente = Clientes.query.get(id)
-        heading = f'Últimas vendas para {cliente.nome}'
+    # if tipo == 'ver_vendas':
+    #     cliente = Clientes.query.get(id)
+    #     heading = f'Últimas vendas para {cliente.nome}'
+    #
+    #     page = request.args.get('page', 1, type=int)
+    #     listagem = (Vendas.query
+    #                 .filter(Vendas.cliente_id == id)
+    #                 .order_by(desc(Vendas.data_venda))
+    #                 .paginate(page=page, per_page=5)
+    #                 )
+    #     return render_template('listagens.html', listagem=listagem,
+    #                            heading=heading, tipo=tipo, id=id)
 
-        page = request.args.get('page', 1, type=int)
-        listagem = (Vendas.query
-                    .filter(Vendas.cliente_id == id)
-                    .order_by(desc(Vendas.data_venda))
-                    .paginate(page=page, per_page=5)
-                    )
-        return render_template('listagens.html', listagem=listagem,
-                               heading=heading, tipo=tipo, id=id)
 
-    return redirect(url_for('views_consultas.index'))
+
+    return redirect(url_for('views_consultas.landing'))
 
 
 @views_consultas.route('/details/<tipo>/<int:id>', methods=['GET', 'POST'])
+@login_required
 def details(tipo, id):
     """Detalhamento de qqer coisa."""
     if tipo in ['aberto', 'vendas', 'ver_vendas']:
@@ -187,4 +207,4 @@ def details(tipo, id):
         return render_template('details.html', item=pagamento,
                                heading=heading, tipo=tipo)
 
-    return redirect(url_for('views_consultas.index'))
+    return redirect(url_for('views_consultas.landing'))
