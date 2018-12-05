@@ -8,4 +8,5 @@ __pycache__
 petshop/data.sqlite
 petshop/credenciais.py
 migrations/
+crud/
 __pycache__/

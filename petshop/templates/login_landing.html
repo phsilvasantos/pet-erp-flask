@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <h1 class="display-4">ERP</h1>
+    <p class="lead">Cadastro de clientes e registro de vendas</p>
+</div>
+
+<div class="jumbotron">
+
+<h3 class="display-5">Welcome!</h3>
+
+<h4>Cadastrar novas vendas de:</h4>
+
+<a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">
+    Banho & Tosa</a>
+<a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'hosp') }}">
+    Hospedagem</a>
+<a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'cursos') }}">
+    Cursos</a>
+<a class="btn btn-primary" href="{{ url_for('views_vendas.vendas', tipo = 'produtos') }}">
+    Produtos</a>
+
+
+</div>
+{% endblock %}

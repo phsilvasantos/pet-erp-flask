@@ -8,10 +8,15 @@ from sqlalchemy import desc, or_
 
 views_consultas = Blueprint('views_consultas', __name__)
 
-
 @views_consultas.route('/')
-@login_required
 def index():
+    """Index page."""
+
+    return render_template('index.html')
+
+
+@views_consultas.route('/landing')
+def landing():
     """Index page."""
     page = request.args.get('page', 1, type=int)
     # listagem = Vendas.query.filter(
@@ -21,7 +26,6 @@ def index():
                 .query
                 .filter(or_(Vendas.saldo > 0, Vendas.saldo == None))
                 .order_by(desc(Vendas.data_venda))
-                # .all()
                 .paginate(page=page, per_page=5)
                 )
 
@@ -31,7 +35,8 @@ def index():
         return render_template('listagens.html', listagem=listagem,
                                heading=heading, tipo=tipo, id=0)
 
-    return render_template('index.html')
+    return render_template('login_landing.html')
+
 
 
 @views_consultas.route('/listagem/<tipo>/<int:id>', methods=['GET', 'POST'])

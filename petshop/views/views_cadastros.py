@@ -1,9 +1,55 @@
-from flask import render_template, request, Blueprint, redirect, url_for
+from flask import (render_template, request, Blueprint,
+                   redirect, url_for, flash)
+from flask_login import login_user, logout_user, login_required
 from petshop import db
-from petshop.modelos.forms import Form_clientes, Form_peludos
-from petshop.modelos.models import Clientes, Peludos, Contatos, Enderecos, Vendas, Pagamentos
+from petshop.modelos.forms import (Form_clientes, Form_peludos, Form_login)
+from petshop.modelos.models import (Clientes, Peludos, Contatos,
+                                    Enderecos, Vendas, Pagamentos,
+                                    Gerentes)
 
 views_cadastros = Blueprint('views_cadastros', __name__)
+
+
+@views_cadastros.route('/login', methods=['GET', 'POST'])
+def login():
+    """Login the cabras."""
+    pau_senha = 0
+    pau_user = 0
+    form = Form_login()
+    
+    if form.validate_on_submit():
+        gerente = Gerentes.query.filter_by(email=form.email.data).first()
+
+        if gerente is not None:
+            if gerente.check_passw(form.passw.data):
+
+                login_user(gerente)
+                flash('Log in ok .')
+
+                next = request.args.get('next')
+
+                if next == None or not next[0] == '/':
+                    next = url_for('view_consultas.landing')
+
+                return redirect(next)
+            else:
+                pau_senha = 1
+                render_template('login.html', form=form, pau_senha=pau_senha, pau_user=pau_user)
+
+        else:
+            pau_user =1
+            render_template('login.html', form=form, pau_senha=pau_senha, pau_user=pau_user)
+
+    return render_template('login.html', form=form, pau_senha=pau_senha, pau_user=pau_user)
+
+
+@views_cadastros.route('/logout')
+@login_required
+def logout():
+    """Log out the cabra."""
+    logout_user()
+    flash('You logged out!')
+    return redirect(url_for('view_consultas.index'))
 
 
 @views_cadastros.route('/cadastro_clientes/',

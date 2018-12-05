@@ -1,4 +1,4 @@
-import babel
+# import babel
 from flask_wtf import FlaskForm
 from datetime import datetime
 from wtforms_components import (
@@ -16,8 +16,10 @@ from wtforms.validators import DataRequired, Email
 
 
 class Form_login(FlaskForm):
+    """Login form."""
+
     email = StringField('e-mail', validators=[DataRequired(), Email()])
-    passw = PasswordField('senha', validators=[DataRequired()])
+    passw = PasswordField('Senha', validators=[DataRequired()])
     submit = SubmitField('Entrar')
 
 

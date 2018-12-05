@@ -3,5 +3,5 @@
 - set FLASK_APP=myapp.py ou
 - $env:FLASK_APP = "application.py"
 - flask db init
-- flask db migrate -m 'starting over'
+- flask db migrate -m 'gerente class'
 - flask db upgrade
