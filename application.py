@@ -1,5 +1,6 @@
-from petshop import app
+from petshop import application
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    application.debug = True
+    application.run()

@@ -1,0 +1,9 @@
+.mypy_cache
+.ropeproject
+__pycache__
+*.xls
+*.xlsx
+petshop/data.sqlite
+petshop/credenciais.py
+crud/
+__pycache__/
