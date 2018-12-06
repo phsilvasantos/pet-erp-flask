@@ -4,12 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
+import secrets
 import os
 
 
 application = Flask(__name__)
 Bootstrap(application)
-application.config['SECRET_KEY'] = 'mysecret'
+application.config['SECRET_KEY'] = secrets.key
 
 login_manager = LoginManager()
 # BLUEPRINT CONFIGS #######

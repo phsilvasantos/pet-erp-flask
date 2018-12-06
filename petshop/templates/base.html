@@ -17,7 +17,7 @@
 
     </script>
     <meta charset="utf-8">
-    <title>Control Risks - ERP</title>
+    <title>Loucos por cães - ERP</title>
 </head>
 
 <body>
@@ -35,7 +35,7 @@
         </li>
 
         <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">BT</a>
+        <a class="nav-link" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">Banho&Tosa</a>
         </li>
 
         <li class="nav-item dropdown">
@@ -43,10 +43,10 @@
             Vendas
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">BT</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'hosp') }}">Hosp</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'cursos') }}">Cur</a>
-                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'produtos') }}">Prod</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'bt') }}">Banho&Tos</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'hosp') }}">Hospedagem</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'cursos') }}">Cursos</a>
+                <a class="dropdown-item" href="{{ url_for('views_vendas.vendas', tipo = 'produtos') }}">Produtos</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('views_consultas.listagens', id=0, tipo='vendas') }}">Últimas</a>
                 <a class="dropdown-item" href="#">Pesquisar</a>
