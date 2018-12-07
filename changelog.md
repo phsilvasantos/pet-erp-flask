@@ -2,6 +2,13 @@
 
 ## todo
 
+- insert records, ssh side
+    - build scripts to do that - done!
+
+- testing
+- buying a domain
+
+
 
 2018-12-04
 - launch aws

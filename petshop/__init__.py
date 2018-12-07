@@ -13,17 +13,28 @@ Bootstrap(application)
 application.config['SECRET_KEY'] = secrets.key
 
 login_manager = LoginManager()
-# BLUEPRINT CONFIGS #######
+
 
 # DB Config
 basedir = os.path.abspath(os.path.dirname(__file__))
 application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+###############
+
+# __file__ = 'petshop\\__init__.py'
+# basedir = os.path.abspath(os.path.dirname(__file__))
+#
+# 'sqlite:////' + os.path.join(basedir, 'data.sqlite')
+
+###########
+
+
+
 db = SQLAlchemy(application)
 Migrate(application, db)
 
-
+# BLUEPRINT CONFIGS #######
 from petshop.views.views_cadastros import views_cadastros
 from petshop.views.views_consultas import views_consultas
 from petshop.views.views_vendas import views_vendas

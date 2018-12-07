@@ -326,3 +326,12 @@ class Pagamentos(db.Model):
         Pagamento em {self.data}, por {self.forma_pagto},
         no valor de {self.valor}
         """
+
+
+# def init_db():
+#     """Create all tables."""
+#     db.create_all()
+
+
+if __name__ == '__main__':
+    init_db()

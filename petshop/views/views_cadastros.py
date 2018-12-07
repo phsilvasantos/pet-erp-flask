@@ -3,9 +3,7 @@ from flask import (render_template, request, Blueprint,
 from flask_login import login_user, logout_user, login_required
 from petshop import db
 from petshop.modelos.forms import (Form_clientes, Form_peludos, Form_login)
-from petshop.modelos.models import (Clientes, Peludos, Contatos,
-                                    Enderecos, Vendas, Pagamentos,
-                                    Gerentes)
+from petshop.modelos.models import *
 
 views_cadastros = Blueprint('views_cadastros', __name__)
 
